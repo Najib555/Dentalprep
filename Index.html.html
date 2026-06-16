@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>DentalPrep</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+:root{
+  --navy:#0D1B2A;--navy2:#162232;--teal:#00B4A6;--teal2:#00D4C4;
+  --gold:#F5C842;--white:#F0F4F8;--gray:#7A8FA6;
+  --danger:#E85252;--success:#2ECC71;--card:#162232;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:var(--navy);color:var(--white);min-height:100vh;}
+.view{display:none;min-height:100vh;}.view.active{display:block;}
+/* NAV */
+nav{background:rgba(13,27,42,0.97);border-bottom:1px solid rgba(0,180,166,0.2);
+  padding:0 1.5rem;height:60px;display:flex;align-items:center;
+  justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo{font-size:1.3rem;font-weight:900;color:var(--teal);}
+.logo em{color:var(--gold);font-style:normal;}
+.nav-r{display:flex;gap:.6rem;align-items:center;}
+/* BUTTONS */
+.btn{padding:.55rem 1.2rem;border-radius:8px;font-family:'Inter',sans-serif;
+  font-weight:600;font-size:.85rem;cursor:pointer;border:none;transition:all .2s;}
+.bp{background:var(--teal);color:var(--navy);}
+.bp:hover{background:var(--teal2);}
+.bo{background:transparent;border:1.5px solid var(--teal);color:var(--teal);}
+.bo:hover{background:rgba(0,180,166,0.1);}
+.bg{background:var(--gold);color:var(--navy);font-weight:700;}
+.bg:hover{background:#ffd255;}
+.bd{background:var(--danger);color:#fff;}
+.bsm{padding:.35rem .8rem;font-size:.78rem;}
+.blg{padding:.8rem 1.8rem;font-size:.95rem;border-radius:10px;}
+/* HERO */
+.hero{min-height:88vh;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;padding:3rem 1.5rem;
+  background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(0,180,166,0.07),transparent 70%);}
+.htag{background:rgba(0,180,166,0.12);border:1px solid rgba(0,180,166,0.3);
+  color:var(--teal);padding:.35rem 1rem;border-radius:50px;font-size:.8rem;
+  font-weight:600;margin-bottom:1.2rem;display:inline-block;}
+.hero h1{font-size:clamp(2rem,5vw,3rem);font-weight:900;line-height:1.15;
+  margin-bottom:.8rem;max-width:700px;}
+.acc{color:var(--teal);}
+.hero p{font-size:1rem;color:var(--gray);max-width:500px;line-height:1.7;margin-bottom:2rem;}
+.hcta{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;}
+/* STATS */
+.stats{display:flex;justify-content:center;gap:2.5rem;padding:1.8rem;
+  border-top:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;}
+.stn{font-size:1.6rem;font-weight:900;color:var(--gold);}
+.stl{font-size:.75rem;color:var(--gray);}
+/* SECTION */
+.sec{padding:3rem 1.5rem;max-width:1080px;margin:0 auto;}
+.sec-t{font-size:1.4rem;font-weight:700;margin-bottom:.3rem;}
+.sec-s{color:var(--gray);font-size:.88rem;margin-bottom:1.5rem;}
+/* SUBJECT GRID */
+.sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;}
+.sc{background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:12px;
+  padding:1.3rem;cursor:pointer;transition:all .22s;position:relative;overflow:hidden;}
+.sc:hover{border-color:rgba(0,180,166,0.4);transform:translateY(-3px);
+  box-shadow:0 8px 28px rgba(0,0,0,0.3);}
+.sc-icon{font-size:2rem;margin-bottom:.6rem;}
+.sc-name{font-size:1rem;font-weight:700;margin-bottom:.7rem;}
+.sc-sub{font-size:.8rem;color:var(--gray);margin-bottom:.6rem;}
+.sc-badges{display:flex;gap:.4rem;flex-wrap:wrap;}
+.bdg{font-size:.68rem;padding:.2rem .55rem;border-radius:50px;font-weight:600;border:1px solid;}
+.bm{color:var(--gold);border-color:var(--gold);background:rgba(245,200,66,0.08);}
+.bf{color:var(--teal);border-color:var(--teal);background:rgba(0,180,166,0.08);}
+/* STATUS TAGS */
+.stag{position:absolute;top:.8rem;left:.8rem;font-size:.66rem;padding:.18rem .55rem;
+  border-radius:50px;font-weight:600;border:1px solid;}
+.st-lock{background:rgba(232,82,82,0.12);border-color:rgba(232,82,82,0.3);color:var(--danger);}
+.st-free{background:rgba(0,180,166,0.12);border-color:rgba(0,180,166,0.3);color:var(--teal);}
+.st-pend{background:rgba(245,200,66,0.1);border-color:rgba(245,200,66,0.3);color:var(--gold);}
+.st-open{background:rgba(46,204,113,0.12);border-color:rgba(46,204,113,0.3);color:var(--success);}
+/* HOW IT WORKS */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1.2rem;}
+.step{background:var(--card);border-radius:10px;padding:1.3rem;text-align:center;}
+.step-n{width:36px;height:36px;border-radius:50%;background:rgba(0,180,166,0.12);
+  border:2px solid var(--teal);color:var(--teal);font-weight:900;font-size:1rem;
+  display:flex;align-items:center;justify-content:center;margin:0 auto .8rem;}
+.step-t{font-weight:700;margin-bottom:.3rem;font-size:.9rem;}
+.step-d{font-size:.78rem;color:var(--gray);}
+/* DASH */
+.dash-h{max-width:1080px;margin:0 auto;padding:1.8rem 1.5rem 1rem;}
+.dash-w{font-size:1.4rem;font-weight:700;}
+.dash-s{color:var(--gray);font-size:.85rem;}
+/* CHAPTER VIEW */
+.chv{max-width:780px;margin:0 auto;padding:2rem 1.5rem;}
+.chv-t{font-size:1.3rem;font-weight:700;margin-bottom:.3rem;}
+.chv-s{color:var(--gray);font-size:.85rem;margin-bottom:1rem;}
+.clist{display:flex;flex-direction:column;gap:.8rem;margin-top:1rem;}
+.citem{background:var(--card);border:1px solid rgba(255,255,255,0.07);border-radius:10px;
+  padding:1.1rem 1.3rem;display:flex;align-items:center;justify-content:space-between;
+  gap:1rem;flex-wrap:wrap;}
+.ci-name{font-weight:600;font-size:.92rem;margin-bottom:.3rem;}
+.ci-cnt{font-size:.76rem;color:var(--gray);}
+.ci-acts{display:flex;gap:.5rem;flex-shrink:0;}
+/* QUIZ */
+.qv{max-width:760px;margin:0 auto;padding:2rem 1.5rem;}
+.qhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:.8rem;}
+.qtitle{font-size:1rem;font-weight:700;}
+.qmeta{font-size:.78rem;color:var(--gray);}
+.pbar{height:5px;background:rgba(255,255,255,0.09);border-radius:3px;margin-bottom:1.8rem;overflow:hidden;}
+.pfill{height:100%;background:linear-gradient(90deg,var(--teal),var(--teal2));border-radius:3px;transition:width .3s;}
+.qcard{background:var(--card);border-radius:12px;padding:1.8rem;margin-bottom:1.2rem;}
+.qnum{font-size:.75rem;color:var(--teal);font-weight:600;margin-bottom:.6rem;}
+.qtext{font-size:1rem;font-weight:600;line-height:1.6;margin-bottom:1.3rem;}
+.olist{list-style:none;display:flex;flex-direction:column;gap:.65rem;}
+.oitem{background:rgba(255,255,255,0.04);border:1.5px solid rgba(255,255,255,0.09);
+  border-radius:9px;padding:.8rem 1.1rem;cursor:pointer;transition:all .18s;
+  display:flex;align-items:center;gap:.75rem;font-size:.88rem;}
+.oitem:hover{border-color:var(--teal);background:rgba(0,180,166,0.07);}
+.oitem.osel{border-color:var(--teal);background:rgba(0,180,166,0.11);}
+.oitem.ocor{border-color:var(--success);background:rgba(46,204,113,0.1);color:var(--success);}
+.oitem.owrn{border-color:var(--danger);background:rgba(232,82,82,0.1);color:var(--danger);}
+.oitem.odis{cursor:default;}
+.olet{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.07);
+  display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;}
+.oitem.ocor .olet{background:var(--success);color:#fff;}
+.oitem.owrn .olet{background:var(--danger);color:#fff;}
+.oitem.osel .olet{background:var(--teal);color:var(--navy);}
+.expl{background:rgba(255,255,255,0.03);border-right:3px solid var(--teal);
+  border-radius:5px;padding:.75rem .9rem;margin-top:.9rem;font-size:.82rem;
+  color:var(--gray);line-height:1.6;}
+.expl strong{color:var(--teal);}
+.qnav{display:flex;justify-content:space-between;align-items:center;margin-top:1.2rem;}
+/* RESULTS */
+.rcard{background:var(--card);border-radius:14px;padding:2.2rem;text-align:center;
+  max-width:560px;margin:2rem auto;}
+.rpct{font-size:3.5rem;font-weight:900;line-height:1;margin-bottom:.4rem;}
+.rpass{color:var(--success);}.rfail{color:var(--danger);}
+.rlbl{font-size:.9rem;color:var(--gray);margin-bottom:1.3rem;}
+.rstats{display:flex;justify-content:center;gap:1.8rem;margin-bottom:1.8rem;flex-wrap:wrap;}
+.rsn{font-size:1.4rem;font-weight:700;}.rsl{font-size:.72rem;color:var(--gray);}
+/* ADMIN */
+.av{max-width:980px;margin:0 auto;padding:2rem 1.5rem;}
+.atabs{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+.atab{padding:.45rem 1.1rem;border-radius:7px;font-family:'Inter',sans-serif;
+  font-size:.82rem;font-weight:600;cursor:pointer;
+  border:1.5px solid rgba(255,255,255,0.11);background:transparent;color:var(--gray);transition:all .18s;}
+.atab.act{border-color:var(--teal);color:var(--teal);background:rgba(0,180,166,0.09);}
+.asec{display:none;}.asec.act{display:block;}
+table{width:100%;border-collapse:collapse;font-size:.82rem;}
+th{background:rgba(255,255,255,0.04);padding:.65rem .9rem;text-align:left;
+  color:var(--gray);font-weight:600;border-bottom:1px solid rgba(255,255,255,0.06);}
+td{padding:.65rem .9rem;border-bottom:1px solid rgba(255,255,255,0.04);}
+tr:hover td{background:rgba(255,255,255,0.02);}
+.tga{color:var(--success);font-size:.74rem;font-weight:600;}
+.tgp{color:var(--gold);font-size:.74rem;font-weight:600;}
+.aqf{background:var(--card);border-radius:10px;padding:1.3rem;margin-bottom:1.3rem;}
+.gi{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;}
+.orow{display:flex;gap:.5rem;align-items:center;margin-bottom:.5rem;}
+.orow span{color:var(--gray);font-size:.8rem;width:18px;}
+/* FORMS */
+.fg{margin-bottom:.9rem;}
+.fl{font-size:.8rem;color:var(--gray);margin-bottom:.35rem;display:block;}
+.fi{width:100%;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.11);
+  border-radius:7px;padding:.65rem .9rem;font-family:'Inter',sans-serif;
+  font-size:.88rem;color:#fff;transition:border-color .2s;}
+.fi:focus{outline:none;border-color:var(--teal);}
+.fi::placeholder{color:var(--gray);}
+select.fi{cursor:pointer;}
+.fe{font-size:.76rem;color:var(--danger);margin-top:.25rem;}
+.fn{font-size:.78rem;color:var(--gray);background:rgba(255,255,255,0.04);
+  border-radius:7px;padding:.7rem .9rem;line-height:1.6;margin-bottom:.9rem;}
+.fn strong{color:var(--gold);}
+/* PAYMENT */
+.pbox{background:rgba(245,200,66,0.07);border:1px solid rgba(245,200,66,0.3);
+  border-radius:9px;padding:.9rem 1.1rem;margin-bottom:.9rem;}
+.pbox-t{font-weight:700;color:var(--gold);margin-bottom:.4rem;font-size:.9rem;}
+.pd{font-size:.82rem;color:var(--gray);margin-bottom:.25rem;}
+.pd strong{color:#fff;}
+/* MODAL */
+.mo{position:fixed;inset:0;background:rgba(0,0,0,0.72);backdrop-filter:blur(4px);
+  z-index:200;display:flex;align-items:center;justify-content:center;padding:1rem;}
+.mc{background:var(--navy2);border:1px solid rgba(255,255,255,0.1);border-radius:14px;
+  padding:1.8rem;max-width:460px;width:100%;position:relative;}
+.mc h2{font-size:1.2rem;font-weight:700;margin-bottom:1.1rem;}
+.mx{position:absolute;top:.9rem;left:.9rem;background:none;border:none;
+  color:var(--gray);font-size:1.2rem;cursor:pointer;line-height:1;}
+.mx:hover{color:#fff;}
+/* TOAST */
+#toast{position:fixed;bottom:1.8rem;right:1.8rem;background:var(--navy2);
+  border:1px solid rgba(0,180,166,0.4);border-radius:9px;padding:.7rem 1.2rem;
+  font-size:.83rem;z-index:500;transform:translateY(120px);opacity:0;
+  transition:all .3s;max-width:300px;pointer-events:none;}
+#toast.show{transform:translateY(0);opacity:1;}
+/* BACK */
+.back{display:flex;align-items:center;gap:.4rem;color:var(--gray);background:none;
+  border:none;font-family:'Inter',sans-serif;font-size:.85rem;cursor:pointer;
+  padding:.4rem 0;margin-bottom:.9rem;}
+.back:hover{color:#fff;}
+.divider{height:1px;background:rgba(255,255,255,0.05);margin:2.5rem 0;}
+footer{padding:2rem 1.5rem;text-align:center;
+  border-top:1px solid rgba(255,255,255,0.05);color:var(--gray);font-size:.78rem;}
+@media(max-width:580px){
+  .gi{grid-template-columns:1fr;}
+  .rstats{gap:1rem;}
+  .qhdr{flex-direction:column;}
+  .citem{flex-direction:column;align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<nav>
+  <div class="logo">Dental<em>Prep</em></div>
+  <div class="nav-r" id="nav-r"></div>
+</nav>
+
+<!-- HOME -->
+<div id="v-home" class="view active">
+  <div class="hero">
+    <div class="htag">Dental School Quiz Platform</div>
+    <h1>Ace Your Exams with <span class="acc">Confidence</span></h1>
+    <p>Instant-feedback MCQ quizzes organized by subject, chapter, and exam type. Only 1 JD per subject.</p>
+    <div class="hcta">
+      <button class="btn bg blg" onclick="showM('reg-m')">Get Started - 1 JD / Subject</button>
+      <button class="btn bo blg" onclick="scrollTo(0,document.getElementById('subs-sec').offsetTop)">Browse Subjects</button>
+    </div>
+  </div>
+  <div class="stats">
+    <div><div class="stn">2</div><div class="stl">Subjects</div></div>
+    <div><div class="stn">250+</div><div class="stl">MCQ Questions</div></div>
+    <div><div class="stn">12</div><div class="stl">Chapters</div></div>
+    <div><div class="stn">1 JD</div><div class="stl">Per Subject</div></div>
+  </div>
+  <div class="sec" id="subs-sec">
+    <div class="sec-t">Available Subjects</div>
+    <div class="sec-s">Chapter 1 of each subject is FREE - no payment needed</div>
+    <div class="sg" id="home-sg"></div>
+  </div>
+  <div class="divider"></div>
+  <div class="sec">
+    <div class="sec-t">How It Works</div>
+    <div class="sec-s">Four simple steps to access all quizzes</div>
+    <div class="steps">
+      <div class="step"><div class="step-n">1</div><div class="step-t">Create Account</div><div class="step-d">Register free with your name and email</div></div>
+      <div class="step"><div class="step-n">2</div><div class="step-t">Choose Subject</div><div class="step-d">Select the subject you want to unlock</div></div>
+      <div class="step"><div class="step-n">3</div><div class="step-t">Transfer 1 JD</div><div class="step-d">Send to 0799412215 via ClickPay and share your receipt</div></div>
+      <div class="step"><div class="step-n">4</div><div class="step-t">Start Quizzing</div><div class="step-d">After activation all chapters and exam types unlock</div></div>
+    </div>
+  </div>
+  <footer>DentalPrep 2025 - Exam prep platform for dental students</footer>
+</div>
+
+<!-- DASHBOARD -->
+<div id="v-dash" class="view">
+  <div class="dash-h">
+    <div class="dash-w" id="dash-w">Welcome!</div>
+    <div class="dash-s">Choose a subject to start your quiz</div>
+  </div>
+  <div class="sec" style="padding-top:0"><div class="sg" id="dash-sg"></div></div>
+</div>
+
+<!-- CHAPTERS -->
+<div id="v-chaps" class="view">
+  <div class="chv">
+    <button class="back" onclick="showV('v-dash')">&#8592; Back to Subjects</button>
+    <div class="chv-t" id="chv-t"></div>
+    <div class="chv-s">Select a chapter and exam type</div>
+    <div class="clist" id="clist"></div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="v-quiz" class="view">
+  <div class="qv">
+    <button class="back" onclick="confirmLeave()">&#8592; Exit Quiz</button>
+    <div class="qhdr">
+      <div><div class="qtitle" id="qtitle"></div><div class="qmeta" id="qmeta"></div></div>
+      <div id="qlive" style="font-size:.82rem;color:var(--gray)"></div>
+    </div>
+    <div class="pbar"><div class="pfill" id="pfill"></div></div>
+    <div id="qbox"></div>
+    <div class="qnav">
+      <button class="btn bo bsm" id="pbtn" onclick="qnav(-1)" disabled>Prev</button>
+      <span id="qcnt" style="font-size:.82rem;color:var(--gray)"></span>
+      <button class="btn bp bsm" id="nbtn" onclick="qnav(1)">Next</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="v-res" class="view">
+  <div class="qv">
+    <button class="back" onclick="showV('v-dash')">&#8592; Back to Subjects</button>
+    <div class="rcard">
+      <div class="rpct" id="rpct"></div>
+      <div class="rlbl" id="rlbl"></div>
+      <div class="rstats">
+        <div><div class="rsn" id="rcor" style="color:var(--success)"></div><div class="rsl">Correct</div></div>
+        <div><div class="rsn" id="rwrn" style="color:var(--danger)"></div><div class="rsl">Wrong</div></div>
+        <div><div class="rsn" id="rtot" style="color:var(--gray)"></div><div class="rsl">Total</div></div>
+      </div>
+      <div style="display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap">
+        <button class="btn bp" onclick="retake()">Retake Quiz</button>
+        <button class="btn bo" onclick="showV('v-dash')">Back to Subjects</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="v-admin" class="view">
+  <div class="av">
+    <div style="font-size:1.3rem;font-weight:700;margin-bottom:1.3rem">Admin Panel</div>
+    <div class="atabs">
+      <button class="atab act" onclick="aTab(this,'a-users')">Students</button>
+      <button class="atab" onclick="aTab(this,'a-qs')">Questions</button>
+      <button class="atab" onclick="aTab(this,'a-add')">Add Question</button>
+    </div>
+    <div class="asec act" id="a-users">
+      <table><thead><tr><th>Name</th><th>Email</th><th>Subject</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody id="u-tbody"></tbody></table>
+    </div>
+    <div class="asec" id="a-qs">
+      <div style="display:flex;gap:.8rem;margin-bottom:.9rem;flex-wrap:wrap">
+        <select class="fi" style="width:auto" id="f-sub" onchange="renderAQ()">
+          <option value="">All Subjects</option>
+          <option value="physiology">Physiology</option>
+          <option value="anatomy">Anatomy</option>
+        </select>
+        <select class="fi" style="width:auto" id="f-type" onchange="renderAQ()">
+          <option value="">Mid + Final</option>
+          <option value="mid">Mid</option>
+          <option value="final">Final</option>
+        </select>
+        <select class="fi" style="width:auto" id="f-ch" onchange="renderAQ()">
+          <option value="">All Chapters</option>
+        </select>
+      </div>
+      <table><thead><tr><th>#</th><th>Question</th><th>Subject</th><th>Chapter</th><th>Type</th><th>Del</th></tr></thead>
+      <tbody id="q-tbody"></tbody></table>
+    </div>
+    <div class="asec" id="a-add">
+      <div class="aqf">
+        <div class="gi">
+          <div class="fg"><label class="fl">Subject</label>
+            <select class="fi" id="aq-sub"><option value="physiology">Physiology</option><option value="anatomy">Anatomy</option></select></div>
+          <div class="fg"><label class="fl">Chapter</label>
+            <input class="fi" id="aq-ch" placeholder="e.g. Ch1: Hemostasis"></div>
+        </div>
+        <div class="gi">
+          <div class="fg"><label class="fl">Exam Type</label>
+            <select class="fi" id="aq-type"><option value="mid">Mid Term</option><option value="final">Final</option></select></div>
+          <div class="fg"><label class="fl">Free Chapter?</label>
+            <select class="fi" id="aq-free"><option value="false">No (Paid)</option><option value="true">Yes (Free)</option></select></div>
+        </div>
+        <div class="fg"><label class="fl">Question Text</label>
+          <textarea class="fi" id="aq-q" rows="2" placeholder="Write the question here..."></textarea></div>
+        <div class="fg"><label class="fl">Options A to D</label>
+          <div class="orow"><span>A</span><input class="fi" id="aq-0" placeholder="Option A"></div>
+          <div class="orow"><span>B</span><input class="fi" id="aq-1" placeholder="Option B"></div>
+          <div class="orow"><span>C</span><input class="fi" id="aq-2" placeholder="Option C"></div>
+          <div class="orow"><span>D</span><input class="fi" id="aq-3" placeholder="Option D"></div>
+        </div>
+        <div class="gi">
+          <div class="fg"><label class="fl">Correct Answer</label>
+            <select class="fi" id="aq-cor"><option value="0">A</option><option value="1">B</option><option value="2">C</option><option value="3">D</option></select></div>
+          <div class="fg"><label class="fl">Explanation (optional)</label>
+            <input class="fi" id="aq-ex" placeholder="Explain the answer..."></div>
+        </div>
+        <button class="btn bp" onclick="addQ()">Add Question</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REGISTER MODAL -->
+<div id="reg-m" class="mo" style="display:none" onclick="if(event.target===this)hideM('reg-m')">
+  <div class="mc">
+    <button class="mx" onclick="hideM('reg-m')">X</button>
+    <h2>Create Account</h2>
+    <div class="fg"><label class="fl">Full Name</label><input class="fi" id="rn" placeholder="Ahmed Ali"></div>
+    <div class="fg"><label class="fl">Email</label><input class="fi" id="re" type="email" placeholder="student@example.com"></div>
+    <div class="fg"><label class="fl">Password</label><input class="fi" id="rp" type="password" placeholder="Minimum 6 characters"></div>
+    <div id="r-err" class="fe" style="margin-bottom:.6rem"></div>
+    <button class="btn bp" style="width:100%" onclick="doReg()">Create Account</button>
+    <p style="text-align:center;margin-top:.9rem;font-size:.8rem;color:var(--gray)">
+      Already have an account? <a href="#" onclick="swM('reg-m','login-m');return false" style="color:var(--teal)">Login</a></p>
+  </div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div id="login-m" class="mo" style="display:none" onclick="if(event.target===this)hideM('login-m')">
+  <div class="mc">
+    <button class="mx" onclick="hideM('login-m')">X</button>
+    <h2>Login</h2>
+    <div class="fg"><label class="fl">Email</label><input class="fi" id="le" type="email" placeholder="student@example.com"></div>
+    <div class="fg"><label class="fl">Password</label><input class="fi" id="lp" type="password" placeholder="Your password"></div>
+    <div id="l-err" class="fe" style="margin-bottom:.6rem"></div>
+    <button class="btn bp" style="width:100%" onclick="doLogin()">Login</button>
+    <p style="text-align:center;margin-top:.9rem;font-size:.8rem;color:var(--gray)">
+      No account? <a href="#" onclick="swM('login-m','reg-m');return false" style="color:var(--teal)">Sign Up</a></p>
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div id="pay-m" class="mo" style="display:none" onclick="if(event.target===this)hideM('pay-m')">
+  <div class="mc">
+    <button class="mx" onclick="hideM('pay-m')">X</button>
+    <h2>Unlock: <span id="pay-sn" style="color:var(--teal)"></span></h2>
+    <div class="pbox">
+      <div class="pbox-t">Payment via ClickPay</div>
+      <div class="pd">Amount: <strong>1 Jordanian Dinar (JD)</strong></div>
+      <div class="pd">Number: <strong>0799412215</strong></div>
+      <div class="pd">Name: <strong>DentalPrep</strong></div>
+    </div>
+    <div class="fn">After transferring, send a screenshot of the receipt with your <strong>name and subject name</strong> via WhatsApp to the same number. Activation within a few hours.</div>
+    <div class="fg"><label class="fl">Your WhatsApp Number (optional)</label>
+      <input class="fi" id="pay-wa" placeholder="07XXXXXXXX"></div>
+    <button class="btn bg" style="width:100%" onclick="submitPay()">Transfer Done - Send Request</button>
+  </div>
+</div>
+
+<script>
+var AE = "admin@dentalprep.jo";
+var AP = "admin123";
+
+var SUBS = [
+  {id:"physiology", name:"Physiology",           icon:"&#10084;&#65039;"},
+  {id:"anatomy",    name:"Anatomy & Embryology",  icon:"&#129460;"}
+];
+
+var QUESTIONS=[
+{id:1,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"What is the FIRST and most immediate response to vascular injury?",opts:["Platelet plug formation","Fibrin clot formation","Vascular constriction","Factor XII activation"],correct:2,explain:"Local vasoconstriction is the first response \u2014 a myogenic spasm reduces blood flow immediately after injury."},
+{id:2,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"Which protein bridges exposed collagen to platelet GpIb receptors?",opts:["Fibrinogen","Thrombin","Von Willebrand Factor (vWF)","Factor VIII"],correct:2,explain:"vWF anchors platelets to the injury site by binding exposed collagen and platelet GpIb."},
+{id:3,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"Thromboxane A2 released by platelets causes:",opts:["Vasodilation and platelet inhibition","Vasoconstriction and platelet aggregation","Fibrinolysis and anticoagulation","Complement activation"],correct:1,explain:"TXA2 is a potent vasoconstrictor that also promotes further platelet activation and aggregation."},
+{id:4,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"Normal platelet count in blood is:",opts:["50,000-100,000/uL","150,000-300,000/uL","400,000-600,000/uL","1,000,000+/uL"],correct:1,explain:"Normal platelet count ranges from 150,000-300,000 per microliter."},
+{id:5,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"Serum differs from plasma in that serum:",opts:["Contains more clotting factors","Lacks clotting proteins (e.g., fibrinogen)","Has higher protein concentration","Contains more RBCs"],correct:1,explain:"Serum is plasma from which clotting proteins have been removed during coagulation."},
+{id:6,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"Factor III is also known as:",opts:["Fibrinogen","Prothrombin","Tissue Factor / Thromboplastin","Anti-hemophilic factor"],correct:2,explain:"Factor III is Tissue Factor (Thromboplastin), released from damaged tissues to initiate the extrinsic pathway."},
+{id:7,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"The extrinsic pathway is triggered by:",opts:["Contact with collagen","Trauma to vessel wall releasing Tissue Factor","Platelet aggregation","Activation of Factor XII"],correct:1,explain:"The extrinsic pathway is triggered by trauma to the vessel wall releasing Tissue Factor."},
+{id:8,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"The extrinsic pathway can initiate clotting in less than:",opts:["5 seconds","15 seconds","5 minutes","15 minutes"],correct:1,explain:"The extrinsic pathway is explosive and fast, capable of initiating clotting in less than 15 seconds."},
+{id:9,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"The intrinsic pathway takes how long to fully proceed?",opts:["Less than 15 seconds","30 seconds to 1 minute","1 to 6 minutes","15 to 30 minutes"],correct:2,explain:"The intrinsic pathway is significantly slower, taking 1-6 minutes."},
+{id:10,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"Which clotting factor cross-links fibrin monomers to stabilize the clot?",opts:["Factor V","Factor VIII","Factor X","Factor XIII"],correct:3,explain:"Activated Factor XIII creates covalent bonds cross-linking fibrin threads into a tough, durable clot."},
+{id:11,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"Fibrinolysis involves conversion of plasminogen to plasmin by:",opts:["Thrombin","Antithrombin III","tPA (Tissue Plasminogen Activator)","Factor XIII"],correct:2,explain:"tPA released by injured tissues activates plasminogen to plasmin, which digests fibrin fibers."},
+{id:12,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"Prothrombin is synthesized in the:",opts:["Kidney","Bone marrow","Liver (Vitamin K-dependent)","Spleen"],correct:2,explain:"Prothrombin is an alpha-2-globulin synthesized in the liver in a Vitamin K-dependent process."},
+{id:13,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"Clot retraction begins approximately how long after clot formation?",opts:["Immediately","5-10 minutes","20-60 minutes","6-12 hours"],correct:2,explain:"Clot retraction occurs within 20-60 minutes, driven by platelet contractile proteins."},
+{id:14,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"EDTA prevents blood clotting by:",opts:["Inhibiting thrombin directly","Chelating calcium ions","Activating antithrombin III","Coating the tube with silicone"],correct:1,explain:"EDTA chelates Ca2+ ions, shutting down the entire coagulation cascade."},
+{id:15,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"A pulmonary embolus most commonly originates from:",opts:["Deep leg vein thrombosis (DVT)","Cardiac valve vegetations","Splenic vein thrombus","Atrial fibrillation"],correct:0,explain:"A pulmonary embolus usually originates from a DVT in the leg that dislodges in approximately 10% of cases."},
+{id:16,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"Protein C is activated by the complex of thrombin and:",opts:["Fibrinogen","Antithrombin III","Thrombomodulin","Factor V"],correct:2,explain:"The thrombin-thrombomodulin complex activates Protein C, which inactivates Factors V and VIII as negative feedback."},
+{id:17,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"Which contractile proteins in platelets enable clot retraction?",opts:["Tubulin and dynein","Actin, myosin, and thrombosthenin","Collagen and elastin","Fibronectin and laminin"],correct:1,explain:"Platelets contain actin, myosin, and thrombosthenin essential for clot retraction."},
+{id:18,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"In the extrinsic pathway, Tissue Factor combines with which factor?",opts:["Factor V","Factor VII","Factor IX","Factor XI"],correct:1,explain:"Tissue Factor forms a complex with activated Factor VII (VIIa) to activate Factor X in the presence of Ca2+."},
+{id:19,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"The rate-limiting step in coagulation is:",opts:["Fibrinogen to fibrin","Prothrombin to thrombin","Formation of prothrombin activator (prothrombinase)","Fibrin cross-linking by Factor XIII"],correct:2,explain:"Formation of the prothrombin activator complex is the initial and rate-limiting step."},
+{id:20,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"Antithrombin III inactivates circulating thrombin over a period of:",opts:["30 seconds","5-10 minutes","12-20 minutes","1-2 hours"],correct:2,explain:"The 10-15% of thrombin that escapes into blood is inactivated by antithrombin III over 12-20 minutes."},
+{id:21,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"Plasmin specifically digests:",opts:["Fibrinogen in plasma only","Fibrin fibers and inactivates Factors V, VIII, XII and prothrombin","Prothrombin only","Platelets"],correct:1,explain:"Plasmin digests fibrin fibers and inactivates several clotting factors."},
+{id:22,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"Which step in the intrinsic pathway does NOT require calcium ions?",opts:["Factor IX activation","Factor X activation by IXa-VIII complex","Prothrombin activator assembly","Factor XI activation by Factor XIIa"],correct:3,explain:"Activation of Factor XI by Factor XIIa does not require calcium; it depends on HMWK and prekallikrein."},
+{id:23,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"The intrinsic pathway is initiated by:",opts:["Tissue factor release","Blood trauma or contact with collagen activating Factor XII","Platelet TXA2 release","Thrombomodulin activation"],correct:1,explain:"The intrinsic pathway begins with blood trauma or collagen contact activating Factor XII."},
+{id:24,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"Which factor complex activates Factor X in the intrinsic pathway?",opts:["Factor VII + Tissue Factor","Factor IXa + Factor VIII + Ca2+ + platelet phospholipids","Factor XI + HMWK","Factor XII + prekallikrein"],correct:1,explain:"Factor IXa forms a complex with Factor VIII, Ca2+, and platelet phospholipids to activate Factor X."},
+{id:25,subject:"physiology",chapter:"Ch1: Hemostasis & Coagulation",free:true,type:"mid",q:"Fibroblasts invade the clot and replace it with fibrous tissue after:",opts:["15-60 seconds","3-6 minutes","1 day","1-2 weeks"],correct:3,explain:"1-2 weeks after clot formation, fibroblasts replace the clot with fibrous tissue."},
+{id:26,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"Vitamin K is essential for synthesis of which clotting factors?",opts:["Factors I, II, III, IV","Factors II, VII, IX, X and Protein C","Factors VIII, IX, XI, XII","Factors V, VIII, XI, XIII"],correct:1,explain:"Vitamin K is essential for carboxylation of Factors II, VII, IX, X, and Protein C."},
+{id:27,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"Warfarins mechanism of action is:",opts:["Direct thrombin inhibition","Inhibiting VKORc1, preventing vitamin K recycling","Chelating calcium ions","Activating antithrombin III"],correct:1,explain:"Warfarin inhibits VKORc1, preventing reactivation of oxidized Vitamin K, leading to inactive clotting factors."},
+{id:28,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"Therapeutic INR range for patients on anticoagulant therapy is:",opts:["0.5-1.0","1.5-1.8","2.0-3.0","4.0-5.0"],correct:2,explain:"Therapeutic INR of 2.0-3.0 reduces clotting risk without causing high bleeding risk."},
+{id:29,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"Normal INR in a healthy individual is:",opts:["0.5-0.8","0.9-1.3","2.0-3.0","3.5-4.5"],correct:1,explain:"Normal INR is 0.9-1.3, indicating normal clotting function."},
+{id:30,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"Heparins mechanism of action is:",opts:["Directly dissolving fibrin","Binding to antithrombin III and potentiating it 100-1000 fold","Inhibiting vitamin K recycling","Chelating calcium"],correct:1,explain:"Heparin binds to antithrombin III and increases its effectiveness 100-1000 fold."},
+{id:31,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"Which cells physiologically produce heparin?",opts:["Neutrophils and eosinophils","Mast cells and basophils","Kupffer cells","Platelets and megakaryocytes"],correct:1,explain:"Heparin is naturally released by mast cells and basophils."},
+{id:32,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"Normal bleeding time (Duke method) is:",opts:["Less than 5 minutes","6-10 minutes","10-15 minutes","15-20 minutes"],correct:0,explain:"Normal bleeding time using the Duke method is less than 5 minutes."},
+{id:33,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"Prothrombin Time (PT) measures:",opts:["Intrinsic pathway only","Extrinsic and common pathways","Intrinsic and common pathways","Common pathway only"],correct:1,explain:"PT measures the Extrinsic and Common Pathways (Factors I, II, V, VII, X)."},
+{id:34,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"Normal PT is approximately:",opts:["6 seconds","12 seconds","20 seconds","30 seconds"],correct:1,explain:"The normal PT is approximately 12 seconds."},
+{id:35,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"PTT primarily evaluates:",opts:["Extrinsic pathway","Intrinsic and common pathways","Platelet function","Fibrinolysis"],correct:1,explain:"PTT measures the Intrinsic and Common Pathways (Factors I, II, V, VIII, IX, X, XI, XII)."},
+{id:36,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"Prolonged PT with normal PTT indicates:",opts:["Intrinsic pathway deficiency","Extrinsic pathway deficiency (Factor VII) or common pathway","Platelet dysfunction","Fibrinolysis disorder"],correct:1,explain:"Prolonged PT with normal PTT indicates extrinsic pathway (Factor VII) or common pathway deficiency."},
+{id:37,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"Treatment of warfarin overdose includes:",opts:["Heparin infusion","Fresh Frozen Plasma (FFP) and Vitamin K","Platelet transfusion","tPA administration"],correct:1,explain:"Warfarin overdose: FFP for immediate factor replacement and Vitamin K to restore natural production."},
+{id:38,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"Hemophilia A is caused by deficiency of:",opts:["Factor VII","Factor VIII","Factor IX","Factor X"],correct:1,explain:"Hemophilia A (85% of hemophilia cases) is caused by deficiency of Factor VIII."},
+{id:39,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"Hemophilia B is caused by deficiency of:",opts:["Factor VII","Factor VIII","Factor IX","Factor XI"],correct:2,explain:"Hemophilia B (15% of cases) is caused by deficiency of Factor IX (Christmas disease)."},
+{id:40,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"Hemophilia genes are located on which chromosome?",opts:["Autosome 1","Autosome 22","X chromosome","Y chromosome"],correct:2,explain:"Both Hemophilia A and B are X-linked disorders, predominantly affecting males."},
+{id:41,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"A platelet count below which level is life-threatening?",opts:["50,000/uL","10,000/uL","100,000/uL","150,000/uL"],correct:1,explain:"A platelet count less than 10,000/uL is life-threatening due to risk of spontaneous severe internal bleeding."},
+{id:42,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"Von Willebrand Disease resembles platelet dysfunction because:",opts:["vWF cross-links fibrin","vWF is essential for platelet adhesion to endothelial surface","vWF activates Factor X","vWF inhibits thrombin"],correct:1,explain:"vWF is essential for platelet adhesion; its deficiency causes platelet dysfunction-like symptoms."},
+{id:43,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"Prolonged antibiotic use can cause Vitamin K deficiency by:",opts:["Blocking VKORc1 enzyme","Destroying intestinal bacteria that produce Vitamin K","Binding directly to Vitamin K","Increasing Vitamin K breakdown"],correct:1,explain:"Prolonged antibiotics destroy intestinal flora that synthesizes Vitamin K, leading to deficiency."},
+{id:44,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"Which molecule repels clotting factors from intact endothelium?",opts:["Thrombomodulin","Glycocalyx (mucopolysaccharide coating)","Protein C","Fibronectin"],correct:1,explain:"The glycocalyx coating on endothelial cells repels clotting factors and platelets, preventing inappropriate clotting."},
+{id:45,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"DIC (Disseminated Intravascular Coagulation) initially causes:",opts:["Localized clot formation","Widespread clotting in small blood vessels throughout the body","Single-site bleeding","Thrombocytosis"],correct:1,explain:"DIC triggers abnormal widespread coagulation in small blood vessels, depleting clotting factors."},
+{id:46,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"Normal clotting time (blood in glass tube) is:",opts:["1-3 minutes","6-10 minutes","15-20 minutes","30-60 minutes"],correct:1,explain:"Normal clotting time is 6-10 minutes."},
+{id:47,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"Bleeding time primarily evaluates:",opts:["Coagulation cascade (extrinsic)","Platelet function and capillary integrity (primary hemostasis)","Fibrinolysis","Clotting factor concentrations"],correct:1,explain:"Bleeding time assesses platelet function and capillary integrity."},
+{id:48,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"Petechiae are caused by:",opts:["Thrombocytosis","Thrombocytopenia - small ruptures cannot be sealed","Polycythemia","Leukocytosis"],correct:1,explain:"Thrombocytopenia prevents sealing of small capillary ruptures, producing petechiae."},
+{id:49,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"Vitamin K given preoperatively corrects deficiency within:",opts:["30 minutes","4-8 hours","24-48 hours","1 week"],correct:1,explain:"Vitamin K injection given 4-8 hours before surgery corrects deficiency."},
+{id:50,subject:"physiology",chapter:"Ch2: Anticoagulants & Bleeding Tests",free:false,type:"final",q:"Fibrin fibers bind what percentage of generated thrombin within the clot?",opts:["50-60%","70-80%","85-90%","95-99%"],correct:2,explain:"Fibrin fibers bind and incorporate 85-90% of generated thrombin, localizing its activity within the clot."},
+{id:51,subject:"physiology",chapter:"Ch3: Blood Groups & Transfusion",free:false,type:"mid",q:"In the ABO blood group system, which alleles are dominant?",opts:["O and A","A and B","B and O","All are codominant"],correct:1,explain:"A and B are dominant alleles; O is recessive."},
+{id:52,subject:"physiology",chapter:"Ch3: Blood Groups & Transfusion",free:false,type:"mid",q:"Blood type O individuals have:",opts:["Anti-A only","Anti-B only","Both Anti-A and Anti-B","Neither Anti-A nor Anti-B"],correct:2,explain:"Blood type O individuals have antibodies against both A and B antigens."},
+{id:53,subject:"physiology",chapter:"Ch3: Blood Groups & Transfusion",free:false,type:"mid",q:"The most common blood type in humans is:",opts:["A (41%)","B (9%)","O (47%)","AB (3%)"],correct:2,explain:"Blood type O is most common, occurring in approximately 47% of the population."},
+{id:54,subject:"physiology",chapter:"Ch3: Blood Groups & Transfusion",free:false,type:"mid",q:"In the Rh system, the most antigenic factor is:",opts:["C antigen","D antigen","E antigen","c antigen"],correct:1,explain:"D antigen is the most antigenic Rh factor."},
+{id:55,subject:"physiology",chapter:"Ch3: Blood Groups & Transfusion",free:false,type:"mid",q:"What percentage of Rh- individuals become sensitized after FIRST exposure to Rh+ blood?",opts:["20%","30%","50%","80%"],correct:2,explain:"50% of Rh-negative individuals become sensitized after first exposure."},
+{id:56,subject:"physiology",chapter:"Ch3: Blood Groups & Transfusion",free:false,type:"mid",q:"Erythroblastosis fetalis (HDN) occurs when:",opts:["Father is Rh-, mother is Rh+","Mother is Rh-, fetus is Rh+","Both parents are Rh-","Mother is Rh+, fetus is Rh-"],correct:1,explain:"HDN occurs when an Rh- mother develops anti-D antibodies that attack Rh+ fetal RBCs."},
+{id:57,subject:"physiology",chapter:"Ch3: Blood Groups & Transfusion",free:false,type:"mid",q:"Why is ABO incompatibility less dangerous than Rh incompatibility?",opts:["ABO antigens are more immunogenic","Most anti-A/B are large IgM that CANNOT cross the placenta","ABO has no natural antibodies","Fetal RBCs have more ABO antigens"],correct:1,explain:"Most anti-A/B antibodies are IgM pentamers (large) that cannot cross the placenta."},
+{id:58,subject:"physiology",chapter:"Ch3: Blood Groups & Transfusion",free:false,type:"mid",q:"Prevention of Rh HDN involves giving the mother:",opts:["Anti-A antibodies","Exogenous anti-D (Rh immunoglobulin)","Vitamin K injection","Heparin"],correct:1,explain:"Exogenous anti-D prevents the mother from forming her own anti-D antibodies."},
+{id:59,subject:"physiology",chapter:"Ch3: Blood Groups & Transfusion",free:false,type:"mid",q:"Treatment of erythroblastosis fetalis (HDN) includes:",opts:["IV antibiotics","Exchange transfusion with Rh-negative blood","Platelet transfusion","Fresh frozen plasma"],correct:1,explain:"HDN is treated with exchange transfusion with Rh-negative blood."},
+{id:60,subject:"physiology",chapter:"Ch3: Blood Groups & Transfusion",free:false,type:"mid",q:"Acute renal failure after transfusion reaction is caused by:",opts:["Fluid overload","Renal vasoconstriction from hemolysis products and circulatory shock","Allergic reaction to plasma proteins","Hypercalcemia"],correct:1,explain:"Hemolysis products cause renal vasoconstriction; immune shock further reduces renal perfusion."},
+{id:61,subject:"physiology",chapter:"Ch3: Blood Groups & Transfusion",free:false,type:"mid",q:"After FIRST exposure to Rh+ blood, anti-Rh antibodies develop after:",opts:["24-48 hours","2-4 weeks","3-6 months","1-2 years"],correct:1,explain:"After first exposure, the Rh- individual slowly produces IgG anti-Rh antibodies over 2-4 weeks."},
+{id:62,subject:"physiology",chapter:"Ch3: Blood Groups & Transfusion",free:false,type:"mid",q:"ABO blood group antigens are predominantly:",opts:["Lipoproteins","Glycoproteins or glycolipids","Polysaccharides only","Pure proteins"],correct:1,explain:"ABO antigens (agglutinogens) are mostly glycoproteins or glycolipids present on all body cells."},
+{id:63,subject:"physiology",chapter:"Ch3: Blood Groups & Transfusion",free:false,type:"mid",q:"The minimum volume of blood hemolyzed in less than 1 day to produce jaundice is:",opts:["100 mL","200 mL","400 mL","800 mL"],correct:2,explain:"Jaundice appears when at least 400 mL of blood is hemolyzed in less than 1 day."},
+{id:64,subject:"physiology",chapter:"Ch3: Blood Groups & Transfusion",free:false,type:"mid",q:"Agglutination as an antibody mechanism involves:",opts:["Neutralizing toxins","Dissolving antigen","Clumping of particles when antibodies bridge two or more antigens","Killing cells directly"],correct:2,explain:"Agglutination occurs when antibodies bridge multiple antigens causing clumping."},
+{id:65,subject:"physiology",chapter:"Ch3: Blood Groups & Transfusion",free:false,type:"mid",q:"IgM differs from IgG in ABO reactions because IgM:",opts:["Crosses the placenta easily","Is a pentamer that CANNOT cross the placenta","Is a monomer","Is produced only in secondary response"],correct:1,explain:"IgM is a large pentamer that cannot cross the placenta."},
+{id:66,subject:"physiology",chapter:"Ch4: RBCs & Anemia",free:false,type:"final",q:"The normal lifespan of a red blood cell is approximately:",opts:["30 days","60 days","90 days","120 days"],correct:3,explain:"RBCs have a lifespan of approximately 120 days."},
+{id:67,subject:"physiology",chapter:"Ch4: RBCs & Anemia",free:false,type:"final",q:"Iron recycled from destroyed RBCs is transported bound to:",opts:["Albumin","Transferrin","Ferritin","Haptoglobin"],correct:1,explain:"Iron from hemoglobin binds to transferrin for transport to bone marrow or storage."},
+{id:68,subject:"physiology",chapter:"Ch4: RBCs & Anemia",free:false,type:"final",q:"Pernicious anemia is caused by lack of:",opts:["Dietary iron","Folic acid","Intrinsic factor (needed for B12 absorption)","Erythropoietin"],correct:2,explain:"Pernicious anemia results from lack of intrinsic factor, necessary for Vitamin B12 absorption."},
+{id:69,subject:"physiology",chapter:"Ch4: RBCs & Anemia",free:false,type:"final",q:"Megaloblastic anemia results from deficiency of:",opts:["Iron and copper","Vitamin B12 and/or Folic Acid","Vitamin K and calcium","Zinc and selenium"],correct:1,explain:"Megaloblastic anemia results from B12 and/or Folic Acid deficiency, causing large fragile RBCs."},
+{id:70,subject:"physiology",chapter:"Ch4: RBCs & Anemia",free:false,type:"final",q:"In iron deficiency anemia, RBCs appear:",opts:["Macrocytic and hyperchromic","Microcytic and hypochromic","Normocytic and normochromic","Spherocytic"],correct:1,explain:"Iron deficiency causes microcytic and hypochromic RBCs due to insufficient hemoglobin."},
+{id:71,subject:"physiology",chapter:"Ch4: RBCs & Anemia",free:false,type:"final",q:"After acute blood loss, normal RBC concentration is restored in:",opts:["1-3 hours","1-3 days","3-6 weeks","3-6 months"],correct:2,explain:"Plasma volume restores in 1-3 days but RBC concentration requires 3-6 weeks."},
+{id:72,subject:"physiology",chapter:"Ch4: RBCs & Anemia",free:false,type:"final",q:"Aplastic anemia is characterized by:",opts:["Excessive RBC production","Bone marrow failure - inadequate production of all blood cell types","Premature destruction of RBCs","Defective hemoglobin synthesis"],correct:1,explain:"Aplastic anemia is bone marrow failure, resulting in inadequate production of all blood cells."},
+{id:73,subject:"physiology",chapter:"Ch4: RBCs & Anemia",free:false,type:"final",q:"Polycythemia Vera is best described as:",opts:["Compensatory response to high altitude","A clonal genetic disorder - uncontrolled bone marrow proliferation","Secondary to chronic lung disease","Physiological adaptation to exercise"],correct:1,explain:"Polycythemia Vera is a clonal genetic blood cancer causing uncontrolled proliferation of all blood cell lineages."},
+{id:74,subject:"physiology",chapter:"Ch4: RBCs & Anemia",free:false,type:"final",q:"Skin appearance in polycythemia is:",opts:["Pallor","Jaundice","Ruddy (reddish) complexion with bluish tint","Petechiae"],correct:2,explain:"Engorgement of subcapillary venous plexus produces a ruddy complexion with bluish tint."},
+{id:75,subject:"physiology",chapter:"Ch4: RBCs & Anemia",free:false,type:"final",q:"In sickle cell anemia, RBCs become sickle-shaped when they:",opts:["Absorb oxygen","Release oxygen (deoxygenation)","Encounter high calcium","Are exposed to cold"],correct:1,explain:"In sickle cell anemia, RBCs become sickle-shaped and fragile upon deoxygenation."},
+{id:76,subject:"physiology",chapter:"Ch5: WBCs, Inflammation & Leukemia",free:false,type:"mid",q:"The normal total WBC count in a healthy adult is approximately:",opts:["700/mm3","7,000/mm3","70,000/mm3","700,000/mm3"],correct:1,explain:"Total WBC count in a healthy adult is approximately 7,000 per mm3."},
+{id:77,subject:"physiology",chapter:"Ch5: WBCs, Inflammation & Leukemia",free:false,type:"mid",q:"Which WBC type is MOST abundant (~62% of all WBCs)?",opts:["Lymphocytes","Monocytes","Neutrophils","Eosinophils"],correct:2,explain:"Neutrophils are the most abundant WBC, making up approximately 62% of all white blood cells."},
+{id:78,subject:"physiology",chapter:"Ch5: WBCs, Inflammation & Leukemia",free:false,type:"mid",q:"Granulocytes survive in TISSUES for:",opts:["4-8 hours","4-5 days","2-3 weeks","Several months"],correct:1,explain:"Granulocytes circulate for 4-8 hours then survive in tissues for 4-5 days."},
+{id:79,subject:"physiology",chapter:"Ch5: WBCs, Inflammation & Leukemia",free:false,type:"mid",q:"Diapedesis refers to:",opts:["Migration along chemical gradient","Neutrophils squeezing through endothelial cell gaps","Rolling along vessel wall","Phagocytosis of bacteria"],correct:1,explain:"Diapedesis is neutrophils squeezing through gaps between endothelial cells to exit the bloodstream."},
+{id:80,subject:"physiology",chapter:"Ch5: WBCs, Inflammation & Leukemia",free:false,type:"mid",q:"Chemotaxis refers to:",opts:["Rolling along vessel wall","Squeezing through endothelium","Following a chemoattractant gradient to the infection site","Phagocytosing bacteria"],correct:2,explain:"Chemotaxis is directed movement of neutrophils following a gradient of chemoattractants to the infection site."},
+{id:81,subject:"physiology",chapter:"Ch5: WBCs, Inflammation & Leukemia",free:false,type:"mid",q:"A macrophage can ingest approximately how many bacteria?",opts:["3-20","20-50","Up to 100","Up to 500"],correct:2,explain:"Macrophages can ingest up to approximately 100 bacteria before becoming exhausted."},
+{id:82,subject:"physiology",chapter:"Ch5: WBCs, Inflammation & Leukemia",free:false,type:"mid",q:"Eosinophils are particularly important in defense against:",opts:["Viral infections","Bacterial infections","Parasitic infections","Fungal infections"],correct:2,explain:"Eosinophils are especially important against parasitic infections."},
+{id:83,subject:"physiology",chapter:"Ch5: WBCs, Inflammation & Leukemia",free:false,type:"mid",q:"Basophils and mast cells release all EXCEPT:",opts:["Histamine","Heparin","Serotonin","Interferon-gamma"],correct:3,explain:"Basophils/mast cells release histamine, heparin, serotonin, bradykinin, leukotrienes - but NOT interferon-gamma."},
+{id:84,subject:"physiology",chapter:"Ch5: WBCs, Inflammation & Leukemia",free:false,type:"mid",q:"Bone marrow can increase WBC output by how many times during severe infection?",opts:["2-5 times","5-10 times","20-50 times","100-200 times"],correct:2,explain:"Bone marrow can increase granulocyte/monocyte output by 20-50 times normal."},
+{id:85,subject:"physiology",chapter:"Ch5: WBCs, Inflammation & Leukemia",free:false,type:"mid",q:"Pus is composed of:",opts:["Dead neutrophils, dead bacteria, and necrotic tissue","Active neutrophils and plasma proteins","RBCs and platelets","Complement proteins and antibodies"],correct:0,explain:"Pus contains dead neutrophils/macrophages, dead bacteria, necrotic tissue, and tissue fluid."},
+{id:86,subject:"physiology",chapter:"Ch5: WBCs, Inflammation & Leukemia",free:false,type:"mid",q:"Kupffer cells are specialized macrophages found in:",opts:["Lung alveoli","Liver sinusoids","Lymph node sinuses","Splenic pulp"],correct:1,explain:"Kupffer cells are large fixed macrophages lining the sinusoids of the liver."},
+{id:87,subject:"physiology",chapter:"Ch5: WBCs, Inflammation & Leukemia",free:false,type:"mid",q:"Which enzyme produces bactericidal hypochlorite using H2O2 and Cl-?",opts:["Superoxide dismutase","Catalase","Myeloperoxidase","Lysozyme"],correct:2,explain:"Myeloperoxidase catalyzes H2O2 + 2Cl- producing bactericidal hypochlorite."},
+{id:88,subject:"physiology",chapter:"Ch5: WBCs, Inflammation & Leukemia",free:false,type:"mid",q:"G-CSF primarily stimulates production of:",opts:["Monocytes","Eosinophils","Neutrophils","Lymphocytes"],correct:2,explain:"G-CSF (Granulocyte Colony-Stimulating Factor) primarily stimulates neutrophil production."},
+{id:89,subject:"physiology",chapter:"Ch5: WBCs, Inflammation & Leukemia",free:false,type:"mid",q:"Four cardinal signs of inflammation are:",opts:["Fever, fatigue, nausea, vomiting","Heat, redness, swelling, and pain","Cyanosis, pallor, edema, dyspnea","Lymphadenopathy, splenomegaly, hepatomegaly, anemia"],correct:1,explain:"Heat, redness, swelling, and pain - caused by vasodilation and increased capillary permeability."},
+{id:90,subject:"physiology",chapter:"Ch5: WBCs, Inflammation & Leukemia",free:false,type:"mid",q:"Leukemia is characterized by:",opts:["Leukopenia","Uncontrolled production of abnormal WBCs due to genetic mutation","Reduced bone marrow activity","Normal WBC function with elevated count only"],correct:1,explain:"Leukemia is cancer characterized by uncontrolled production of abnormal WBCs."},
+{id:91,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Which type of immunity is NOT specific to a particular microorganism?",opts:["Acquired immunity","Humoral immunity","Innate immunity","Cellular immunity"],correct:2,explain:"Innate immunity is non-specific and inborn - does not require prior exposure."},
+{id:92,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"B lymphocytes are named after the:",opts:["Bone marrow of humans","Bursa of Fabricius in birds","Blood of mammals","Brain lymphoid tissue"],correct:1,explain:"B cells are named after the Bursa of Fabricius in birds where they were first discovered."},
+{id:93,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"T cells complete their maturation in the:",opts:["Spleen","Lymph nodes","Bone marrow","Thymus"],correct:3,explain:"T cells migrate from bone marrow to the thymus to complete development."},
+{id:94,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Helper T cells (CD4+) constitute approximately what percentage of all T cells?",opts:["25%","50%","75%","90%"],correct:2,explain:"Helper T cells (CD4+) make up approximately 75% of all T cells."},
+{id:95,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"The PRIMARY immune response shows a latent period of approximately:",opts:["2 days","2 weeks","2 months","6 months"],correct:1,explain:"The primary immune response has a latent period of about 2 weeks before measurable antibody levels rise."},
+{id:96,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Which immunoglobulin is FIRST produced in a primary immune response?",opts:["IgG","IgA","IgM","IgE"],correct:2,explain:"IgM is the earliest produced antibody; it is a large pentamer."},
+{id:97,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"IgG constitutes approximately what percentage of all immunoglobulins?",opts:["25%","50%","75%","90%"],correct:2,explain:"IgG makes up about 75% of all immunoglobulins."},
+{id:98,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"The secondary immune response produces antibody levels how much higher?",opts:["5 times","10 times","Up to 100 times","1,000 times"],correct:2,explain:"Memory cells produce a faster, stronger secondary response with antibody levels up to 100 times higher."},
+{id:99,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Anaphylaxis is mediated by which immunoglobulin?",opts:["IgM","IgG","IgA","IgE"],correct:3,explain:"IgE-mediated anaphylaxis is a systemic reaction with widespread vasodilation."},
+{id:100,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Opsonization enhances phagocytosis by coating particles with:",opts:["Lysozyme and defensins","Antibodies or complement proteins","Histamine and serotonin","Prostaglandins"],correct:1,explain:"Opsonization coats particles with antibodies or complement proteins recognized by receptors on phagocytes."},
+{id:101,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Self-reactive T cell clones in the thymus are:",opts:["Released into circulation","Stored in bone marrow","Induced to undergo apoptosis (clonal deletion)","Converted to regulatory T cells"],correct:2,explain:"Up to 90% of self-reactive T cells are destroyed by apoptosis in the thymus (clonal deletion)."},
+{id:102,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Myasthenia gravis involves autoantibodies against:",opts:["Double-stranded DNA","Acetylcholine receptors","Streptococcal antigens","Thyroid peroxidase"],correct:1,explain:"Myasthenia gravis involves autoantibodies against acetylcholine receptors at the neuromuscular junction."},
+{id:103,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"The classical complement pathway is triggered by:",opts:["Bacterial polysaccharides directly","Mannose-binding lectin","Antibody-antigen complex interactions","Properdin activation"],correct:2,explain:"The classical pathway is activated by antibody-antigen interactions."},
+{id:104,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Which immunoglobulin crosses the placenta to provide neonatal immunity?",opts:["IgM","IgA","IgG","IgE"],correct:2,explain:"IgG is the only immunoglobulin that crosses the placenta, providing passive immunity to the neonate."},
+{id:105,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"IgA is found predominantly in:",opts:["Blood serum","Secretions (saliva, tears, breast milk, mucous membranes)","Inside cells","Lymph nodes"],correct:1,explain:"Secretory IgA is the predominant antibody in mucosal secretions."},
+{id:106,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Cytotoxic T cells (CD8+) kill all EXCEPT:",opts:["Virus-infected cells","Cancer cells","Transplanted organs/tissues","Free-floating toxins"],correct:3,explain:"Cytotoxic T cells kill virus-infected cells, cancer cells, and transplanted tissues - NOT free-floating toxins."},
+{id:107,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"After a monocyte enters inflamed tissue, it matures into a macrophage in:",opts:["30 minutes","4 hours","8-24 hours","3-5 days"],correct:2,explain:"Monocytes mature into active macrophages in approximately 8-24 hours."},
+{id:108,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Which cytokine produced by macrophages activates T cells?",opts:["IL-4","IL-10","IL-12","Interferon-alpha"],correct:2,explain:"IL-12 produced by macrophages is a key cytokine that activates T cells."},
+{id:109,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Natural killer (NK) cells differ from cytotoxic T cells because NK cells:",opts:["Require prior sensitization","Kill only bacteria","Can kill WITHOUT prior sensitization against specific antigen","Produce antibodies"],correct:2,explain:"NK cells can kill virus-infected and tumor cells without prior sensitization."},
+{id:110,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"HIV specifically targets and destroys:",opts:["Cytotoxic T cells (CD8+)","B cells","Helper T cells (CD4+)","Neutrophils"],correct:2,explain:"HIV specifically targets and destroys CD4+ Helper T cells, progressively weakening the immune system."},
+{id:111,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Which part of an antibody binds to an antigen?",opts:["Fc region (constant)","Fab region (variable, antigen-binding fragment)","Hinge region","Heavy chain constant domain"],correct:1,explain:"The Fab region contains variable domains that specifically recognize and bind antigens."},
+{id:112,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Passive immunity is characterized by:",opts:["Long-lasting protection with memory","Rapid protection WITHOUT developing memory cells","Vaccination-induced immunity","Cell-mediated immunity"],correct:1,explain:"Passive immunity provides immediate but temporary protection without developing immune memory."},
+{id:113,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Regulatory T cells (Tregs) function to:",opts:["Kill virus-infected cells","Activate macrophages","Suppress excessive immune responses and maintain tolerance","Produce antibodies"],correct:2,explain:"Regulatory T cells suppress excessive immune responses and prevent autoimmunity."},
+{id:114,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"The walling-off mechanism of infection through fibrin mesh prevents:",opts:["Platelet plug formation","Complement activation","Spread of infection into the bloodstream (sepsis)","T cell activation"],correct:2,explain:"The fibrin clot formed during inflammation localizes infection and prevents spread into bloodstream."},
+{id:115,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Streptococcal infection spreads more easily than staphylococcal because:",opts:["Streptococci produce more toxins","Streptococci induce a weaker local inflammatory walling-off response","Streptococci have larger capsules","Streptococci grow faster"],correct:1,explain:"Streptococci induce a weaker inflammatory response, so the walling-off mechanism is less effective."},
+{id:116,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"The Membrane Attack Complex (MAC) causes bacterial:",opts:["Agglutination","Opsonization","Lysis (pore formation in membrane)","Neutralization"],correct:2,explain:"MAC (C5b-9) is the terminal complement complex that creates pores in bacterial membranes, causing lysis."},
+{id:117,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Alveolar macrophages are the first line of defense in:",opts:["The liver","The digestive system","The respiratory system","The urinary tract"],correct:2,explain:"Alveolar macrophages in lung alveoli constitute the first line of defense in the respiratory system."},
+{id:118,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Acquired immunity can neutralize toxins at concentrations up to:",opts:["Equal to lethal dose","10 times lethal dose","1,000 times lethal dose","100,000 times lethal dose"],correct:3,explain:"Acquired immunity is powerful enough to neutralize up to 100,000 times the lethal dose of some toxins."},
+{id:119,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Margination in neutrophil recruitment involves:",opts:["Following a chemical gradient","Squeezing through endothelium","Slowing, rolling, stopping on vessel wall via selectins and ICAM-1","Increasing speed in blood flow"],correct:2,explain:"Inflamed endothelial cells display selectins and ICAM-1 causing neutrophils to slow, roll, and stop."},
+{id:120,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"The sequence of cellular response to infection is:",opts:["Neutrophils - Macrophages - Lymphocytes","Resident macrophages - Neutrophils - Monocytes/Macrophages - Bone marrow","Macrophages - Neutrophils - Monocytes - B cells","B cells - T cells - NK cells - Eosinophils"],correct:1,explain:"First: resident tissue macrophages. Second: neutrophils. Third: monocytes mature to macrophages. Fourth: bone marrow produces more."},
+{id:121,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"M-CSF primarily stimulates production of:",opts:["Neutrophils","Eosinophils","Monocytes/Macrophages","Lymphocytes"],correct:2,explain:"M-CSF (Macrophage Colony-Stimulating Factor) primarily stimulates monocyte/macrophage production."},
+{id:122,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Leukopenia is most commonly caused by:",opts:["Excessive peripheral destruction of WBCs","Reduced production in bone marrow","Increased sequestration in spleen","Excessive immune activation"],correct:1,explain:"Leukopenia is almost always caused by reduced WBC production in bone marrow."},
+{id:123,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Secondary polycythemia is caused by:",opts:["Genetic bone marrow mutation","Chronic low oxygen (hypoxemia) stimulating erythropoietin","Autoimmune attack on RBCs","Splenic sequestration"],correct:1,explain:"Secondary polycythemia is a compensatory response to chronic hypoxemia, causing sustained erythropoietin stimulation."},
+{id:124,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Hereditary spherocytosis causes hemolytic anemia because:",opts:["Spherical RBCs cannot carry oxygen","Sphere-shaped RBCs are more easily ruptured (hemolyzed)","They stimulate autoimmune antibodies","They block capillaries"],correct:1,explain:"Sphere-shaped RBCs are more rigid and more easily hemolyzed than normal biconcave disc RBCs."},
+{id:125,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Immunoglobulins make up approximately what percentage of all plasma proteins?",opts:["5%","10%","20%","40%"],correct:2,explain:"Immunoglobulins make up about 20% of all plasma proteins."},
+{id:126,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"The primary lymphoid organs where lymphocytes develop are:",opts:["Spleen and lymph nodes","Thymus and bone marrow","Tonsils and Peyers patches","Liver and spleen"],correct:1,explain:"Primary lymphoid organs: thymus (T cell maturation) and bone marrow (B cell maturation and origin)."},
+{id:127,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Rheumatoid arthritis is autoimmune attack on:",opts:["Acetylcholine receptors","Synovial joint components","Thyroid cells","Pancreatic beta cells"],correct:1,explain:"Rheumatoid arthritis involves autoimmune attack on synovial joint components, causing chronic inflammation."},
+{id:128,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Antigen presentation to T cells requires:",opts:["Direct antigen contact with T cells","Presentation via MHC molecules on antigen-presenting cells (APCs)","Antibody coating of antigen","Complement opsonization"],correct:1,explain:"T cells cannot recognize free antigens; antigens must be processed and presented by APCs via MHC molecules."},
+{id:129,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Antibodies functions include all EXCEPT:",opts:["Neutralization of toxins","Agglutination of bacteria","Direct DNA repair in infected cells","Complement activation"],correct:2,explain:"Antibodies neutralize toxins, cause agglutination, activate complement, and enhance opsonization - they do NOT repair DNA."},
+{id:130,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"The booster effect in vaccination is due to:",opts:["Higher vaccine dose","Memory lymphocytes producing rapid and stronger secondary response","More antigenic vaccine formula","Different administration route"],correct:1,explain:"Booster doses work because memory lymphocytes rapidly proliferate and produce much higher antibody levels."},
+{id:131,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Bone marrow reserve of mature neutrophils represents approximately:",opts:["1 day supply","3 days supply","6 days supply","14 days supply"],correct:2,explain:"The marrow holds approximately 3 times the circulating number of myeloid cells - a 6-day supply."},
+{id:132,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Histiocytes are specialized macrophages found in:",opts:["Liver sinusoids","Lung alveoli","Skin and subcutaneous tissue","Lymph node germinal centers"],correct:2,explain:"Histiocytes are resident macrophages in skin and subcutaneous tissue."},
+{id:133,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"DIC initial hypercoagulable state eventually leads to:",opts:["Complete resolution","Severe hypocoagulable state and uncontrollable bleeding","Compensatory increase in clotting factors","Localized clot formation only"],correct:1,explain:"DIC depletes clotting factors/platelets and activates fibrinolysis, turning thrombosis into hemorrhage."},
+{id:134,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Neutrophilia involves WBC count rising to:",opts:["6,000-8,000/mm3","10,000-12,000/mm3","15,000-25,000/mm3 or higher","50,000-100,000/mm3"],correct:2,explain:"Neutrophilia involves a dramatic increase to 15,000-25,000/mm3 or higher."},
+{id:135,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Leukemias are classified based on:",opts:["Age and gender","Cell lineage and disease progression (acute vs. chronic)","Blood group","Platelet count"],correct:1,explain:"Leukemias are classified by cell lineage (lymphocytic vs. myelogenous) and progression (acute vs. chronic)."},
+{id:136,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"The platelet lifespan (half-life) is:",opts:["1-2 days","8-12 days","30 days","60 days"],correct:1,explain:"Platelets have a short half-life of 8-12 days because they lack a nucleus."},
+{id:137,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Macrophages in lymph nodes function to:",opts:["Produce antibodies directly","Phagocytose foreign particles in lymph as it percolates through sinuses","Activate neutrophils only","Produce clotting factors"],correct:1,explain:"Macrophages lining lymph node sinuses phagocytose foreign particles, filtering lymph before it returns to bloodstream."},
+{id:138,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Plasma cells are activated B cells that function to:",opts:["Kill virus-infected cells","Phagocytose bacteria","Produce and secrete antibodies (immunoglobulins)","Activate T cells"],correct:2,explain:"Plasma cells are activated B cells that differentiate to become antibody-secreting factories."},
+{id:139,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Tolerance (self-recognition) is maintained by:",opts:["High IgG levels","Clonal deletion of self-reactive lymphocytes in thymus/bone marrow","Complement activation","Platelet aggregation"],correct:1,explain:"Immunological tolerance is maintained primarily by clonal deletion of self-reactive lymphocytes during development."},
+{id:140,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Immediate (Type I) hypersensitivity is mediated by:",opts:["IgM","IgG","IgA","IgE bound to mast cells and basophils"],correct:3,explain:"Type I hypersensitivity is IgE-mediated - IgE on mast cells/basophils cross-links upon allergen exposure, triggering degranulation."},
+{id:141,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"The spleen is similar to lymph nodes but filters:",opts:["Lymph fluid","Blood","Cerebrospinal fluid","Interstitial fluid"],correct:1,explain:"The spleen filters blood, while lymph nodes filter lymph."},
+{id:142,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"ADP released by activated platelets functions to:",opts:["Inhibit further platelet activation","Act as vasoconstrictor","Recruit and activate additional circulating platelets","Directly activate coagulation cascade"],correct:2,explain:"ADP released from platelet granules recruits and activates additional circulating platelets."},
+{id:143,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"The precursor of platelets in bone marrow is:",opts:["Monocytes","Erythroblasts","Megakaryocytes","Lymphoblasts"],correct:2,explain:"Megakaryocytes extend protrusions into blood vessels that fragment to release platelets."},
+{id:144,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Factor VIII circulates bound to:",opts:["Fibrinogen","Albumin","Von Willebrand Factor (vWF)","Antithrombin III"],correct:2,explain:"Factor VIII circulates bound to vWF, which stabilizes it."},
+{id:145,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"The alternative complement pathway is activated by:",opts:["Antibody-antigen complexes","Mannose on bacterial surfaces","Bacterial cell-wall polysaccharides WITHOUT antibody","Lectin binding"],correct:2,explain:"The alternative (properdin) pathway is activated directly by bacterial cell-wall polysaccharides without antibody."},
+{id:146,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Leukotrienes released during anaphylaxis cause:",opts:["Vasodilation and bradycardia","Bronchospasm and wheezing","Hypertension and tachycardia","Platelet aggregation"],correct:1,explain:"Leukotrienes cause bronchospasm and wheezing, contributing to respiratory distress in anaphylaxis."},
+{id:147,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Platelet count replaced each day per microliter is approximately:",opts:["3,000/uL","30,000/uL","100,000/uL","300,000/uL"],correct:1,explain:"About 30,000 platelets per uL are replaced each day."},
+{id:148,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Fibrinogen is an acute-phase reactant because:",opts:["Its levels decrease during inflammation","Its levels increase during inflammation","It activates complement","It inhibits platelet aggregation"],correct:1,explain:"Fibrinogen is synthesized in the liver with levels increasing during inflammation."},
+{id:149,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Histamine released during inflammation causes:",opts:["Vasoconstriction and decreased permeability","Vasodilation and increased capillary permeability","Platelet aggregation","Complement activation"],correct:1,explain:"Histamine causes vasodilation and increased capillary permeability, contributing to heat, redness, and swelling."},
+{id:150,subject:"physiology",chapter:"Ch6: Acquired Immunity",free:false,type:"final",q:"Prostaglandins released during inflammation contribute mainly to:",opts:["Vasoconstriction","Pain and fever","Platelet aggregation only","Decreased vascular permeability"],correct:1,explain:"Prostaglandins are major mediators of pain and fever during the inflammatory response."},
+{id:201,subject:"anatomy",chapter:"Ch1: Ovarian & Uterine Cycle",free:true,type:"mid",q:"The ovarian cycle is divided into which THREE phases?",opts:["Follicular, Luteal, Menstrual","Preovulatory (follicular), Ovulation, Postovulatory (Luteal)","Proliferative, Secretory, Ischemic","Menstrual, Ovulatory, Implantation"],correct:1,explain:"The ovarian cycle has three phases: Preovulatory (follicular), Ovulation, and Postovulatory (Luteal)."},
+{id:202,subject:"anatomy",chapter:"Ch1: Ovarian & Uterine Cycle",free:true,type:"mid",q:"FSH acts in which phase of the ovarian cycle?",opts:["Luteal phase only","Ovulation only","First stage - preovulatory/follicular phase","Secretory phase only"],correct:2,explain:"FSH acts in the first stage, inducing maturation of primary follicle into Graafian follicle and stimulating estrogen."},
+{id:203,subject:"anatomy",chapter:"Ch1: Ovarian & Uterine Cycle",free:true,type:"mid",q:"LH induces which events during the ovarian cycle?",opts:["Maturation of primordial follicles only","Final maturation of Graafian follicle, ovulation, corpus luteum formation, and progesterone secretion","Only FSH secretion","Inhibition of estrogen production"],correct:1,explain:"LH induces final follicle maturation, ovulation, corpus luteum formation, and progesterone secretion."},
+{id:204,subject:"anatomy",chapter:"Ch1: Ovarian & Uterine Cycle",free:true,type:"mid",q:"Ovulation occurs approximately how many days before the NEXT menstruation?",opts:["7 days","14 days","21 days","28 days"],correct:1,explain:"Ovulation occurs approximately 14 days (+/- 1 day) before the beginning of the next menstruation."},
+{id:205,subject:"anatomy",chapter:"Ch1: Ovarian & Uterine Cycle",free:true,type:"mid",q:"Corpus luteum secretes which hormone responsible for the secretory phase?",opts:["Estrogen","FSH","Progesterone","hCG"],correct:2,explain:"Corpus luteum secretes progesterone, responsible for the secretory phase of the uterine cycle."},
+{id:206,subject:"anatomy",chapter:"Ch1: Ovarian & Uterine Cycle",free:true,type:"mid",q:"If fertilization does NOT occur, corpus luteum degenerates into:",opts:["Corpus luteum of pregnancy","Corpus cavernosum","Corpus albicans (fibrous body)","Primordial follicle"],correct:2,explain:"Without fertilization, the corpus luteum degenerates after 9 days and becomes the fibrous corpus albicans."},
+{id:207,subject:"anatomy",chapter:"Ch1: Ovarian & Uterine Cycle",free:true,type:"mid",q:"The corpus luteum of pregnancy is maintained until the 4th month by:",opts:["LH from pituitary","FSH from pituitary","Human Chorionic Gonadotropin (hCG) from the embryo","Progesterone from corpus luteum itself"],correct:2,explain:"If fertilization occurs, hCG secreted by the embryo maintains the corpus luteum until the 4th month."},
+{id:208,subject:"anatomy",chapter:"Ch1: Ovarian & Uterine Cycle",free:true,type:"mid",q:"The uterine cycle passes through which THREE phases?",opts:["Follicular, Ovulatory, Luteal","Menstrual, Proliferative, Secretory","Ischemic, Regenerative, Proliferative","Preovulatory, Ovulatory, Postovulatory"],correct:1,explain:"The uterine cycle: Menstrual phase, Proliferative (estrogenic) phase, and Secretory (progestational) phase."},
+{id:209,subject:"anatomy",chapter:"Ch1: Ovarian & Uterine Cycle",free:true,type:"mid",q:"The Stratum FUNCTIONALE of the endometrium is supplied by:",opts:["Short straight arteries","Long spiral arteries (dilated by progesterone)","Sinusoidal vessels","Portal veins"],correct:1,explain:"The Stratum functionale is supplied by long spiral arteries dilated by progesterone. This layer sheds at menstruation."},
+{id:210,subject:"anatomy",chapter:"Ch1: Ovarian & Uterine Cycle",free:true,type:"mid",q:"The Stratum BASALIS of the endometrium is the:",opts:["Layer that sheds during menstruation","Layer that receives the embryo","Regenerative layer - reforms uterine glands after menstruation","Layer that secretes progesterone"],correct:2,explain:"The Stratum basalis is the regenerative layer responsible for reforming uterine glands after menstruation. It does NOT shed."},
+{id:211,subject:"anatomy",chapter:"Ch1: Ovarian & Uterine Cycle",free:true,type:"mid",q:"The menstrual phase occurs due to:",opts:["Increased progesterone","Increased estrogen","Decreased progesterone causing spiral artery constriction and shedding","LH surge"],correct:2,explain:"Decreased progesterone at end of luteal phase causes spiral artery constriction and shedding of superficial endometrium."},
+{id:212,subject:"anatomy",chapter:"Ch1: Ovarian & Uterine Cycle",free:true,type:"mid",q:"The proliferative phase of the uterine cycle is under effect of:",opts:["Progesterone from corpus luteum","Estrogen from the developing follicle","FSH from pituitary","hCG from embryo"],correct:1,explain:"The proliferative phase is driven by estrogen from the developing follicle."},
+{id:213,subject:"anatomy",chapter:"Ch1: Ovarian & Uterine Cycle",free:true,type:"mid",q:"The menstrual phase typically lasts:",opts:["1-2 days","3-5 days","7-10 days","14 days"],correct:1,explain:"The menstrual phase lasts 3-5 days."},
+{id:214,subject:"anatomy",chapter:"Ch1: Ovarian & Uterine Cycle",free:true,type:"mid",q:"Mid-cycle pain at ovulation on the right side may mimic:",opts:["Appendicitis","Renal colic","Peptic ulcer","Cholecystitis"],correct:0,explain:"Right-sided Mittelschmerz (ovulation pain) may be misdiagnosed as acute appendicitis."},
+{id:215,subject:"anatomy",chapter:"Ch1: Ovarian & Uterine Cycle",free:true,type:"mid",q:"Ovulation does NOT occur during:",opts:["Normal menstrual cycle","Stress only","Pregnancy and (to a lesser extent) lactation","High estrogen states"],correct:2,explain:"Ovulation does not occur during pregnancy and is suppressed (to a lesser extent) during lactation."},
+{id:216,subject:"anatomy",chapter:"Ch1: Ovarian & Uterine Cycle",free:true,type:"mid",q:"LH causes increased prostaglandin activity at ovulation, resulting in:",opts:["Follicle growth","Ovarian contraction leading to follicle rupture","Corpus luteum formation","Endometrial thickening"],correct:1,explain:"LH increases prostaglandins causing ovarian contraction and stimulates collagenase activity causing follicle rupture."},
+{id:217,subject:"anatomy",chapter:"Ch1: Ovarian & Uterine Cycle",free:true,type:"mid",q:"Which hormone released by the dominant follicle inhibits FSH (negative feedback)?",opts:["Progesterone","Estrogen","LH","Prolactin"],correct:1,explain:"Only one follicle reaches maturity; its estrogen inhibits FSH (negative feedback), causing degeneration of other follicles."},
+{id:218,subject:"anatomy",chapter:"Ch1: Ovarian & Uterine Cycle",free:true,type:"mid",q:"After the placenta forms (4th month), it takes over progesterone secretion from:",opts:["Corpus albicans","Primary follicle","Corpus luteum of pregnancy","Endometrium"],correct:2,explain:"The corpus luteum maintains the uterine environment until 4th month, after which the placenta takes over."},
+{id:219,subject:"anatomy",chapter:"Ch1: Ovarian & Uterine Cycle",free:true,type:"mid",q:"The uterine wall from outside to inside consists of:",opts:["Mucosa, submucosa, muscularis","Endometrium, myometrium, perimetrium","Perimetrium, myometrium, endometrium","Adventitia, muscularis, mucosa"],correct:2,explain:"From outside to inside: Perimetrium (peritoneal), Myometrium (smooth muscle), Endometrium (mucosa)."},
+{id:220,subject:"anatomy",chapter:"Ch1: Ovarian & Uterine Cycle",free:true,type:"mid",q:"GnRH (Gonadotropin-releasing hormone) is secreted by:",opts:["Anterior pituitary","Posterior pituitary","Hypothalamus","Ovary"],correct:2,explain:"GnRH is secreted by the hypothalamus and stimulates the anterior pituitary to secrete FSH and LH."},
+{id:221,subject:"anatomy",chapter:"Ch2: Meiosis & Cell Division",free:false,type:"mid",q:"Meiosis results in the production of:",opts:["2 diploid cells","4 diploid cells","2 haploid cells","4 haploid cells with 23 chromosomes each"],correct:3,explain:"Meiosis produces 4 haploid cells, each with 23 chromosomes - the gametes."},
+{id:222,subject:"anatomy",chapter:"Ch2: Meiosis & Cell Division",free:false,type:"mid",q:"Meiosis I is called the reduction division because:",opts:["It reduces cell size","Chromosome number reduced from 46 to 23","It reduces DNA content only","It reduces cellular organelles"],correct:1,explain:"Meiosis I is reduction division - chromosome number is reduced from diploid (46) to haploid (23)."},
+{id:223,subject:"anatomy",chapter:"Ch2: Meiosis & Cell Division",free:false,type:"mid",q:"Crossing-over occurs during which phase?",opts:["Metaphase I","Anaphase I","Telophase I","Prophase I"],correct:3,explain:"Crossing-over occurs during Prophase I, when non-sister chromatids of homologous chromosomes exchange segments."},
+{id:224,subject:"anatomy",chapter:"Ch2: Meiosis & Cell Division",free:false,type:"mid",q:"Crossing-over results in chromosomes called:",opts:["Tetrads","Bivalents","Recombinant chromosomes","Homologous chromosomes"],correct:2,explain:"After crossing-over, resulting chromosomes are called recombinant chromosomes with new combinations of traits."},
+{id:225,subject:"anatomy",chapter:"Ch2: Meiosis & Cell Division",free:false,type:"mid",q:"In Anaphase I, what separates and moves to opposite poles?",opts:["Sister chromatids","Homologous chromosomes","Individual chromosomes","Centromeres"],correct:1,explain:"During Anaphase I, homologous chromosomes separate and move to opposite poles."},
+{id:226,subject:"anatomy",chapter:"Ch2: Meiosis & Cell Division",free:false,type:"mid",q:"Humans have how many pairs of homologous chromosomes?",opts:["22 pairs","23 pairs","44 pairs","46 pairs"],correct:1,explain:"Humans have 23 pairs: 22 pairs of autosomes and 1 pair of sex chromosomes."},
+{id:227,subject:"anatomy",chapter:"Ch2: Meiosis & Cell Division",free:false,type:"mid",q:"During Anaphase II, what separates?",opts:["Homologous chromosomes","Entire chromosomes move to poles","Centromeres split and sister chromatids separate","DNA replication occurs"],correct:2,explain:"During Anaphase II, centromeres split and sister chromatids separate - similar to mitosis."},
+{id:228,subject:"anatomy",chapter:"Ch2: Meiosis & Cell Division",free:false,type:"mid",q:"Is there DNA replication between Meiosis I and Meiosis II?",opts:["Yes, complete replication","Yes, partial replication","No, no DNA replication","Yes, but only in females"],correct:2,explain:"There is NO DNA replication between Meiosis I and II."},
+{id:229,subject:"anatomy",chapter:"Ch2: Meiosis & Cell Division",free:false,type:"mid",q:"A Tetrad refers to:",opts:["Four separate chromosomes","A homologous pair consisting of 4 chromatids after DNA duplication","Four independent cells","A group of four nucleotides"],correct:1,explain:"A Tetrad is a homologous pair consisting of 4 chromatids after S-phase DNA duplication."},
+{id:230,subject:"anatomy",chapter:"Ch2: Meiosis & Cell Division",free:false,type:"mid",q:"Prophase I is the longest phase, taking approximately:",opts:["10% of meiotic time","50% of meiotic time","90% of meiotic time","All meiotic time"],correct:2,explain:"Prophase I is the longest phase - approximately 90% of the entire meiotic process occurs here."},
+{id:231,subject:"anatomy",chapter:"Ch2: Meiosis & Cell Division",free:false,type:"mid",q:"Crossing-over serves primarily to:",opts:["Ensure equal DNA distribution","Create genetic variation in offspring by forming new allele combinations","Increase chromosome number","Reduce cell size"],correct:1,explain:"Crossing-over creates genetic variation by generating recombinant chromosomes."},
+{id:232,subject:"anatomy",chapter:"Ch2: Meiosis & Cell Division",free:false,type:"mid",q:"Metaphase I is characterized by:",opts:["Chromosomes condensing only","Homologous pairs lining up across the center of the cell","Individual chromosomes at equatorial plate","Cytokinesis"],correct:1,explain:"Metaphase I: homologous pairs (bivalents) line up across the equatorial plate."},
+{id:233,subject:"anatomy",chapter:"Ch2: Meiosis & Cell Division",free:false,type:"mid",q:"Which statement about Meiosis II is TRUE?",opts:["DNA replication occurs before it","Homologous chromosomes separate","Sister chromatids separate (similar to mitosis)","4 cells divide into 8 cells"],correct:2,explain:"Meiosis II is similar to mitosis - sister chromatids separate. No prior DNA replication."},
+{id:234,subject:"anatomy",chapter:"Ch2: Meiosis & Cell Division",free:false,type:"mid",q:"Telophase I and Cytokinesis of Meiosis I produce:",opts:["4 haploid cells","2 haploid cells (23 chromosomes, still doubled)","2 diploid cells","1 haploid and 1 diploid cell"],correct:1,explain:"After Meiosis I, two haploid cells are produced, each with 23 chromosomes (sister chromatids still attached)."},
+{id:235,subject:"anatomy",chapter:"Ch2: Meiosis & Cell Division",free:false,type:"mid",q:"The final result of Meiosis II is:",opts:["2 cells with 46 chromosomes","4 cells with 46 chromosomes","4 cells with 23 chromosomes (final haploid gametes)","2 cells with 23 chromosomes"],correct:2,explain:"Meiosis II produces 4 final haploid cells each with 23 chromosomes - the mature gametes."},
+{id:236,subject:"anatomy",chapter:"Ch3: Musculoskeletal System",free:false,type:"final",q:"The adult human skeleton has how many bones?",opts:["186","196","206","226"],correct:2,explain:"The adult skeleton has 206 bones divided into axial and appendicular divisions."},
+{id:237,subject:"anatomy",chapter:"Ch3: Musculoskeletal System",free:false,type:"final",q:"Which bone does NOT articulate with any other bone?",opts:["Patella","Hyoid bone","Pisiform","Sesamoid bones"],correct:1,explain:"The hyoid bone is the only bone that does not articulate with another bone."},
+{id:238,subject:"anatomy",chapter:"Ch3: Musculoskeletal System",free:false,type:"final",q:"The axial skeleton consists of:",opts:["Pelvis, femur, tibia, fibula","Skull, vertebral column, ribs, sternum, and hyoid bone","Clavicle, scapula, humerus","Radius, ulna, carpals"],correct:1,explain:"Axial skeleton: skull, vertebral column, ribs, sternum, and hyoid bone."},
+{id:239,subject:"anatomy",chapter:"Ch3: Musculoskeletal System",free:false,type:"final",q:"The patella is classified as which type of bone?",opts:["Long bone","Short bone","Flat bone","Sesamoid bone"],correct:3,explain:"The patella is a sesamoid bone - develops within a tendon to reduce friction."},
+{id:240,subject:"anatomy",chapter:"Ch3: Musculoskeletal System",free:false,type:"final",q:"Pneumatic bones function in all EXCEPT:",opts:["Decrease weight of skull","Voice resonance","Blood cell production","Warming inspired air"],correct:2,explain:"Pneumatic bones decrease skull weight, provide voice resonance, and warm inspired air. Blood cell production occurs in red bone marrow."},
+{id:241,subject:"anatomy",chapter:"Ch3: Musculoskeletal System",free:false,type:"final",q:"The epiphyseal plate (growth plate) is located:",opts:["At center of diaphysis","In medullary cavity","In metaphysis at each end of a long bone","On articular surface"],correct:2,explain:"The epiphyseal plate is in the metaphysis - the site of longitudinal bone growth."},
+{id:242,subject:"anatomy",chapter:"Ch3: Musculoskeletal System",free:false,type:"final",q:"The epiphysis articular surface is covered by:",opts:["Periosteum","Endosteum","Articular (hyaline) cartilage","Fibrocartilage"],correct:2,explain:"The epiphysis articular surface is covered with hyaline cartilage called articular cartilage."},
+{id:243,subject:"anatomy",chapter:"Ch3: Musculoskeletal System",free:false,type:"final",q:"A condyle is defined as:",opts:["A pointed projection","A rounded elevated articular surface","A depression on bone surface","A hole through bone"],correct:1,explain:"A condyle is a convex elevated articular surface."},
+{id:244,subject:"anatomy",chapter:"Ch3: Musculoskeletal System",free:false,type:"final",q:"A foramen is defined as:",opts:["A long cleft between flat bones","A bony canal with one closed end","A hole through a bone","A semicircular depression on bone border"],correct:2,explain:"A foramen is a hole through a bone (e.g., foramen magnum)."},
+{id:245,subject:"anatomy",chapter:"Ch3: Musculoskeletal System",free:false,type:"final",q:"The periosteum is essential for:",opts:["Forming articular surfaces","Bone growth in diameter and fracture repair","Producing synovial fluid","Lining the medullary cavity"],correct:1,explain:"The periosteum covering the diaphysis is essential for appositional bone growth and fracture repair."},
+{id:246,subject:"anatomy",chapter:"Ch3: Musculoskeletal System",free:false,type:"final",q:"A meatus differs from a canal because a meatus has:",opts:["Two open ends","One closed end","Multiple openings","No connection to bone"],correct:1,explain:"A canal has 2 open ends; a meatus has one closed end (e.g., external auditory meatus)."},
+{id:247,subject:"anatomy",chapter:"Ch3: Musculoskeletal System",free:false,type:"final",q:"The vertebral column is composed of how many vertebrae?",opts:["24-26","28-30","32-33","38-40"],correct:2,explain:"The vertebral column is composed of 32-33 vertebrae separated by intervertebral discs."},
+{id:248,subject:"anatomy",chapter:"Ch3: Musculoskeletal System",free:false,type:"final",q:"Short bones include:",opts:["Femur","Scapula","Vertebra","Carpal and tarsal bones"],correct:3,explain:"Short bones include carpal bones (wrist) and tarsal bones (ankle)."},
+{id:249,subject:"anatomy",chapter:"Ch3: Musculoskeletal System",free:false,type:"final",q:"Functions of bones include all EXCEPT:",opts:["Movement via muscle attachments","Protection of vital organs","Sex hormone production","Blood cell production in bone marrow"],correct:2,explain:"Bone functions: movement, support, protection, blood cell production, mineral storage. Sex hormones are produced in gonads."},
+{id:250,subject:"anatomy",chapter:"Ch3: Musculoskeletal System",free:false,type:"final",q:"The intervertebral disc is composed of:",opts:["Only cartilage","Anulus fibrosus and nucleus pulposus","Two layers of cortical bone","Hyaline cartilage only"],correct:1,explain:"Each disc has anulus fibrosus (outer fibrocartilage ring) and nucleus pulposus (central gelatinous part)."},
+{id:251,subject:"anatomy",chapter:"Ch4: Thorax Anatomy",free:false,type:"final",q:"The Sternal Angle (Angle of Louis) is used clinically for:",opts:["Identifying mitral valve location","Counting ribs - marks the 2nd costal cartilage","Locating xiphoid process","Identifying 1st intercostal space"],correct:1,explain:"The sternal angle is at the level of the 2nd costal cartilage and is used to count ribs."},
+{id:252,subject:"anatomy",chapter:"Ch4: Thorax Anatomy",free:false,type:"final",q:"True ribs are:",opts:["1st to 5th ribs","1st to 7th ribs - attach directly to sternum","8th to 10th ribs","11th and 12th ribs"],correct:1,explain:"True ribs (1st-7th) attach directly to thoracic vertebrae and sternum via their own costal cartilages."},
+{id:253,subject:"anatomy",chapter:"Ch4: Thorax Anatomy",free:false,type:"final",q:"Floating ribs are:",opts:["8th, 9th, 10th ribs","1st and 2nd ribs","11th and 12th ribs - no anterior attachment","7th rib only"],correct:2,explain:"Floating ribs (11th and 12th) have no anterior attachment."},
+{id:254,subject:"anatomy",chapter:"Ch4: Thorax Anatomy",free:false,type:"final",q:"In the subcostal groove, the correct order from top to bottom is:",opts:["Vein, Artery, Nerve (VAN)","Artery, Vein, Nerve","Nerve, Artery, Vein","Vein, Nerve, Artery"],correct:0,explain:"Subcostal groove from superior to inferior: Vein, Artery, Nerve (VAN)."},
+{id:255,subject:"anatomy",chapter:"Ch4: Thorax Anatomy",free:false,type:"final",q:"The sternum is used clinically for:",opts:["Blood pressure measurement","Bone marrow biopsy","Kidney biopsy","Lumbar puncture"],correct:1,explain:"The sternum (along with the iliac crest) is a main site for bone marrow biopsy."},
+{id:256,subject:"anatomy",chapter:"Ch4: Thorax Anatomy",free:false,type:"final",q:"Pectus excavatum is characterized by:",opts:["Protrusion of sternum","Lateral deviation of spine","Concave (caved-in) anterior chest wall","Protrusion of ribs only"],correct:2,explain:"Pectus excavatum is a congenital deformity causing a concave, caved-in appearance of the anterior chest wall."},
+{id:257,subject:"anatomy",chapter:"Ch4: Thorax Anatomy",free:false,type:"final",q:"Scoliosis is defined as:",opts:["Increase in thoracic curve","Lateral bending of the vertebral column","Decrease in lumbar lordosis","Forward protrusion of sternum"],correct:1,explain:"Scoliosis is a lateral bending of the vertebral column, usually in the thoracic region."},
+{id:258,subject:"anatomy",chapter:"Ch4: Thorax Anatomy",free:false,type:"final",q:"Kyphosis is:",opts:["Lateral bending of spine","Increase in thoracic curvature - increased posterior convexity (hunchback)","Decrease in cervical lordosis","Anterior tilting of pelvis"],correct:1,explain:"Kyphosis is an increase in the thoracic curve (hunchback)."},
+{id:259,subject:"anatomy",chapter:"Ch4: Thorax Anatomy",free:false,type:"final",q:"Main muscles of respiration are:",opts:["Pectoralis major and serratus anterior","Diaphragm and intercostal muscles","Scalenes and sternocleidomastoid","Quadratus lumborum and latissimus dorsi"],correct:1,explain:"The primary muscles of respiration are the diaphragm and intercostal muscles."},
+{id:260,subject:"anatomy",chapter:"Ch4: Thorax Anatomy",free:false,type:"final",q:"Quiet expiration is:",opts:["An active process requiring muscle contraction","A passive process due to elastic recoil of lungs and relaxation of diaphragm","Driven by accessory muscles","Requires active diaphragm contraction"],correct:1,explain:"Quiet expiration is passive - elastic recoil of lungs and relaxation of diaphragm."},
+{id:261,subject:"anatomy",chapter:"Ch4: Thorax Anatomy",free:false,type:"final",q:"Typical thoracic vertebrae are numbered:",opts:["T1-T4","T2-T8","T1-T12 all typical","T9-T12"],correct:1,explain:"Typical thoracic vertebrae are T2-T8. Atypical: T1, T9, T10, T11, T12."},
+{id:262,subject:"anatomy",chapter:"Ch4: Thorax Anatomy",free:false,type:"final",q:"T1 is atypical because:",opts:["It has no costal facets","It has a whole costal facet for 1st rib and a demifacet for 2nd rib","It lacks spinous process","It has no transverse processes"],correct:1,explain:"T1 is atypical: whole costal facet for 1st rib and demifacet for 2nd rib."},
+{id:263,subject:"anatomy",chapter:"Ch4: Thorax Anatomy",free:false,type:"final",q:"Posterior intercostal arteries 3-11 arise from:",opts:["Internal thoracic artery","Superior intercostal artery","Descending thoracic aorta","Musculophrenic artery"],correct:2,explain:"Posterior intercostal arteries 3-11 arise from the descending thoracic aorta."},
+{id:264,subject:"anatomy",chapter:"Ch4: Thorax Anatomy",free:false,type:"final",q:"Flail chest is life-threatening because:",opts:["It immediately causes pneumothorax","Multiple adjacent ribs broken causing a segment to move independently","It always causes hemothorax","It compresses the heart"],correct:1,explain:"Flail chest: multiple ribs broken in multiple places create a segment that moves independently (paradoxical breathing)."},
+{id:265,subject:"anatomy",chapter:"Ch4: Thorax Anatomy",free:false,type:"final",q:"Intercostal nerves are ventral rami of:",opts:["Cervical nerves","Thoracic nerves T1-T11 (last = subcostal nerve T12)","Lumbar nerves","Sacral nerves"],correct:1,explain:"Intercostal nerves are ventral rami of thoracic nerves. The last (T12) is subcostal nerve."},
+{id:266,subject:"anatomy",chapter:"Ch4: Thorax Anatomy",free:false,type:"final",q:"The 8th, 9th, and 10th ribs are classified as:",opts:["True ribs","False ribs (attached via 7th rib to sternum)","Floating ribs","Atypical ribs"],correct:1,explain:"8th, 9th, 10th ribs are false ribs - attached via 7th rib, not directly to sternum."},
+{id:267,subject:"anatomy",chapter:"Ch4: Thorax Anatomy",free:false,type:"final",q:"The thoracic inlet is bounded anteriorly by:",opts:["Xiphoid process","Superior border of manubrium sterni","First thoracic vertebra","First rib"],correct:1,explain:"The thoracic inlet is bounded anteriorly by the superior border of the manubrium sterni."},
+{id:268,subject:"anatomy",chapter:"Ch4: Thorax Anatomy",free:false,type:"final",q:"The skull is formed of how many bones?",opts:["14","18","22","28"],correct:2,explain:"The skull is formed of 22 bones, including the mandible."},
+{id:269,subject:"anatomy",chapter:"Ch4: Thorax Anatomy",free:false,type:"final",q:"Accessory muscles of INSPIRATION include:",opts:["Muscles of anterior abdominal wall","Diaphragm and intercostal muscles","Pectoralis, serratus anterior, scalenes, sternocleidomastoid","Quadratus lumborum"],correct:2,explain:"Accessory muscles of inspiration: pectoralis major/minor, serratus anterior, scalene group, sternocleidomastoid."},
+{id:270,subject:"anatomy",chapter:"Ch4: Thorax Anatomy",free:false,type:"final",q:"A typical rib has which landmarks?",opts:["Head, neck, tubercle, angle, shaft, and subcostal groove","Head, neck, body, trochanter, and epicondyle","Process, head, fovea, and notch only","Epiphysis, metaphysis, diaphysis only"],correct:0,explain:"A typical rib has: Head, Neck, Tubercle, Angle, Shaft (body), and Subcostal Groove (VAN)."},
+{id:271,subject:"anatomy",chapter:"Ch5: Upper Limb & Joints",free:false,type:"final",q:"The carpal bones proximal row from lateral to medial are:",opts:["Trapezium, trapezoid, capitate, hamate","Scaphoid, lunate, triquetrum, pisiform","Pisiform, triquetrum, lunate, scaphoid","Hamate, capitate, trapezoid, trapezium"],correct:1,explain:"Proximal row lateral to medial: Scaphoid, Lunate, Triquetrum, Pisiform."},
+{id:272,subject:"anatomy",chapter:"Ch5: Upper Limb & Joints",free:false,type:"final",q:"The distal row of carpal bones from lateral to medial are:",opts:["Scaphoid, lunate, triquetrum, pisiform","Pisiform, hamate, capitate, trapezoid","Trapezium, trapezoid, capitate, hamate","Hamate, capitate, trapezoid, trapezium"],correct:2,explain:"Distal row lateral to medial: Trapezium, Trapezoid, Capitate, Hamate."},
+{id:273,subject:"anatomy",chapter:"Ch5: Upper Limb & Joints",free:false,type:"final",q:"The hand has:",opts:["6 carpal, 5 metacarpal, 12 phalanges","8 carpal, 5 metacarpal, 14 phalanges","8 carpal, 4 metacarpal, 14 phalanges","6 carpal, 4 metacarpal, 12 phalanges"],correct:1,explain:"The hand has 8 carpal bones, 5 metacarpal bones, and 14 phalanges."},
+{id:274,subject:"anatomy",chapter:"Ch5: Upper Limb & Joints",free:false,type:"final",q:"The radius is the ______ bone of the forearm:",opts:["Medial","Lateral","Posterior","Anterior"],correct:1,explain:"The radius is the lateral bone; the ulna is the medial bone of the forearm."},
+{id:275,subject:"anatomy",chapter:"Ch5: Upper Limb & Joints",free:false,type:"final",q:"The head of the radius articulates with:",opts:["Trochlea of humerus and radial notch of ulna","Capitulum of humerus and radial notch of ulna","Olecranon fossa of humerus","Medial epicondyle of humerus"],correct:1,explain:"The head of the radius articulates with the capitulum of humerus and radial notch of ulna."},
+{id:276,subject:"anatomy",chapter:"Ch5: Upper Limb & Joints",free:false,type:"final",q:"The trochlear notch of the ulna articulates with:",opts:["Capitulum of humerus","Head of radius","Trochlea of humerus","Radial tuberosity"],correct:2,explain:"The trochlear notch of the ulna articulates with the trochlea of the humerus - forming the elbow hinge."},
+{id:277,subject:"anatomy",chapter:"Ch5: Upper Limb & Joints",free:false,type:"final",q:"The radial notch of the ulna articulates with:",opts:["Trochlea of humerus","Head of radius","Capitulum of humerus","Radial tuberosity"],correct:1,explain:"The radial notch of the ulna articulates with the circumference of the head of the radius."},
+{id:278,subject:"anatomy",chapter:"Ch5: Upper Limb & Joints",free:false,type:"final",q:"The olecranon process of the ulna prevents:",opts:["Flexion beyond 90 degrees","Hyperextension of the elbow","Pronation of the forearm","Supination of the forearm"],correct:1,explain:"The olecranon process fits into the olecranon fossa during extension, preventing hyperextension."},
+{id:279,subject:"anatomy",chapter:"Ch5: Upper Limb & Joints",free:false,type:"final",q:"The coronoid process of the ulna fits into which fossa during flexion?",opts:["Olecranon fossa","Radial fossa","Coronoid fossa","Supracondylar fossa"],correct:2,explain:"The coronoid process of the ulna fits into the coronoid fossa during full elbow flexion."},
+{id:280,subject:"anatomy",chapter:"Ch5: Upper Limb & Joints",free:false,type:"final",q:"The head of the ulna (lower end) articulates with:",opts:["Trochlea of humerus","Ulnar notch of the radius","Carpal bones directly","Coronoid process"],correct:1,explain:"The head of the ulna articulates with the ulnar notch of the radius at the distal radioulnar joint."},
+{id:281,subject:"anatomy",chapter:"Ch5: Upper Limb & Joints",free:false,type:"final",q:"The Sternoclavicular joint type is:",opts:["Fibrous (syndesmosis)","Primary cartilaginous","Synovial (modified saddle joint)","Secondary cartilaginous (symphysis)"],correct:2,explain:"The sternoclavicular joint is a synovial modified saddle joint."},
+{id:282,subject:"anatomy",chapter:"Ch5: Upper Limb & Joints",free:false,type:"final",q:"The main stabilizing factor of the sternoclavicular joint is:",opts:["Anterior sternoclavicular ligament","Interclavicular ligament","Costoclavicular ligament","Posterior sternoclavicular ligament"],correct:2,explain:"The costoclavicular ligament is the main stabilizing factor of the sternoclavicular joint."},
+{id:283,subject:"anatomy",chapter:"Ch5: Upper Limb & Joints",free:false,type:"final",q:"The Acromioclavicular joint type is:",opts:["Ball and socket","Plane synovial joint","Hinge joint","Condyloid joint"],correct:1,explain:"The acromioclavicular joint is a plane synovial joint."},
+{id:284,subject:"anatomy",chapter:"Ch5: Upper Limb & Joints",free:false,type:"final",q:"The shoulder (Glenohumeral) joint is classified as:",opts:["Hinge synovial joint","Plane synovial joint","Ball-and-socket synovial joint","Pivot synovial joint"],correct:2,explain:"The shoulder joint is a synovial ball-and-socket joint between head of humerus and glenoid cavity."},
+{id:285,subject:"anatomy",chapter:"Ch5: Upper Limb & Joints",free:false,type:"final",q:"The glenoid cavity is deepened by:",opts:["Rotator cuff","Glenoid labrum (fibrocartilaginous rim)","Coracoacromial arch","Glenohumeral ligaments"],correct:1,explain:"The glenoid labrum is a fibrocartilaginous rim that deepens the glenoid cavity."},
+{id:286,subject:"anatomy",chapter:"Ch5: Upper Limb & Joints",free:false,type:"final",q:"Scapular elevation is produced by:",opts:["Lower trapezius and pectoralis minor","Serratus anterior and pectoralis minor","Upper fibers of trapezius and levator scapulae","Rhomboids major and minor"],correct:2,explain:"Elevation of scapula: Upper fibers of trapezius and Levator scapulae."},
+{id:287,subject:"anatomy",chapter:"Ch5: Upper Limb & Joints",free:false,type:"final",q:"Scapular protraction (forward movement) is produced by:",opts:["Rhomboids and middle trapezius","Serratus anterior and pectoralis minor","Upper trapezius and levator scapulae","Lower trapezius and pectoralis major"],correct:1,explain:"Protraction: Serratus anterior and pectoralis minor."},
+{id:288,subject:"anatomy",chapter:"Ch5: Upper Limb & Joints",free:false,type:"final",q:"Scapular retraction (backward movement) is produced by:",opts:["Serratus anterior and pectoralis minor","Rhomboids minor and major, and middle fibers of trapezius","Upper trapezius and levator scapulae","Lower trapezius and latissimus dorsi"],correct:1,explain:"Retraction: Rhomboids minor and major and middle fibers of trapezius."},
+{id:289,subject:"anatomy",chapter:"Ch5: Upper Limb & Joints",free:false,type:"final",q:"Shoulder separation (acromioclavicular dislocation) involves tearing of:",opts:["Glenohumeral ligaments","Rotator cuff tendons","Coracoclavicular ligament","Costoclavicular ligament"],correct:2,explain:"Shoulder separation involves tearing of the coracoclavicular ligament."},
+{id:290,subject:"anatomy",chapter:"Ch5: Upper Limb & Joints",free:false,type:"final",q:"The coracoacromial arch is formed by:",opts:["Coracoid process, acromion, coracoclavicular ligament","Acromion, coracoid process, and coracoacromial ligament","Clavicle, acromion, scapular spine","Glenoid, coracoid, and acromion"],correct:1,explain:"The coracoacromial arch = acromion + coracoid process + coracoacromial ligament."},
+{id:291,subject:"anatomy",chapter:"Ch6: Thoracic Blood Vessels",free:false,type:"final",q:"The Superior Vena Cava is formed by union of:",opts:["Right and left subclavian veins","Right and left brachiocephalic veins","Right and left internal jugular veins","Azygos and brachiocephalic veins"],correct:1,explain:"The SVC is formed by the right and left brachiocephalic veins at the level of the 1st right costal cartilage."},
+{id:292,subject:"anatomy",chapter:"Ch6: Thoracic Blood Vessels",free:false,type:"final",q:"The SVC terminates at:",opts:["1st right costal cartilage","2nd right costal cartilage","3rd right costal cartilage (entering right atrium)","4th right costal cartilage"],correct:2,explain:"The SVC terminates at the 3rd right costal cartilage as it enters the right atrium."},
+{id:293,subject:"anatomy",chapter:"Ch6: Thoracic Blood Vessels",free:false,type:"final",q:"The left brachiocephalic vein is LONGER than the right because:",opts:["The left lung is larger","It passes from left to right anterior to three major branches of the aortic arch","The heart is on the left","It drains more blood"],correct:1,explain:"The left brachiocephalic vein is longer because it crosses from left to right."},
+{id:294,subject:"anatomy",chapter:"Ch6: Thoracic Blood Vessels",free:false,type:"final",q:"Each Brachiocephalic vein is formed by the union of:",opts:["Subclavian and axillary veins","Internal jugular and subclavian veins","External and internal jugular veins","Azygos and subclavian veins"],correct:1,explain:"Each brachiocephalic vein = internal jugular + subclavian veins."},
+{id:295,subject:"anatomy",chapter:"Ch6: Thoracic Blood Vessels",free:false,type:"final",q:"The Azygos vein begins at the level of:",opts:["T1","T4","L2 - from back of IVC opposite renal vein","L5"],correct:2,explain:"The Azygos vein begins from the back of the IVC at approximately L2 (level of renal vein)."},
+{id:296,subject:"anatomy",chapter:"Ch6: Thoracic Blood Vessels",free:false,type:"final",q:"The Azygos vein terminates into:",opts:["Left brachiocephalic vein","Right brachiocephalic vein","SVC opposite right 2nd costal cartilage","Inferior Vena Cava"],correct:2,explain:"The Azygos vein arches forward above right bronchus at T4 and terminates in the SVC."},
+{id:297,subject:"anatomy",chapter:"Ch6: Thoracic Blood Vessels",free:false,type:"final",q:"The Azygos vein arches forward above the right bronchus at:",opts:["T1","T2","T4","T6"],correct:2,explain:"The Azygos vein arches forward above the right bronchus at T4."},
+{id:298,subject:"anatomy",chapter:"Ch6: Thoracic Blood Vessels",free:false,type:"final",q:"The superior hemiazygos vein descends on which side?",opts:["Right side","Left side","Both sides","Anterior surface"],correct:1,explain:"The superior hemiazygos vein descends on the LEFT side of the vertebral column."},
+{id:299,subject:"anatomy",chapter:"Ch6: Thoracic Blood Vessels",free:false,type:"final",q:"Thoracic Outlet Syndrome is caused by compression of:",opts:["The phrenic nerve","Roots of brachial plexus C5-T1 and subclavian vessels against 1st rib","The vagus nerve","Intercostal nerves only"],correct:1,explain:"Thoracic Outlet Syndrome: compression of brachial plexus roots (C5-T1) and subclavian vessels against the 1st rib."},
+{id:300,subject:"anatomy",chapter:"Ch6: Thoracic Blood Vessels",free:false,type:"final",q:"A cervical rib arises from:",opts:["1st thoracic vertebra","Anterior tubercle of transverse process of 7th cervical vertebra","1st rib directly","Manubrium sterni"],correct:1,explain:"A cervical rib arises from the anterior tubercle of the transverse process of the 7th cervical vertebra."}
+];
+
+var nextId = 2000;
+var CU     = null;
+var cSub   = null;
+var cChap  = null;
+var cType  = null;
+var cQs    = [];
+var cIdx   = 0;
+var uAns   = {};
+var dAns   = {};
+
+/* ---- storage ---- */
+function lU(){ try{return JSON.parse(localStorage.getItem("dp_u")||"[]");}catch(e){return[];} }
+function sU(u){ localStorage.setItem("dp_u",JSON.stringify(u)); }
+function lQ(){ try{var s=localStorage.getItem("dp_q");if(s)QUESTIONS=JSON.parse(s);}catch(e){} }
+function sQ(){ localStorage.setItem("dp_q",JSON.stringify(QUESTIONS)); }
+function gU(e){ var u=lU();for(var i=0;i<u.length;i++)if(u[i].email===e)return u[i];return null; }
+
+/* ---- helpers ---- */
+function gi(id){ return document.getElementById(id); }
+
+function getChaps(sid){
+  var out=[];
+  for(var i=0;i<QUESTIONS.length;i++){
+    var q=QUESTIONS[i];
+    if(q.subject===sid && out.indexOf(q.chapter)===-1) out.push(q.chapter);
+  }
+  return out;
+}
+
+function getChapQs(sid,ch,type){
+  var out=[];
+  for(var i=0;i<QUESTIONS.length;i++){
+    var q=QUESTIONS[i];
+    if(q.subject===sid && q.chapter===ch && q.type===type) out.push(q);
+  }
+  return out;
+}
+
+function isFree(sid,ch){
+  for(var i=0;i<QUESTIONS.length;i++){
+    var q=QUESTIONS[i];
+    if(q.subject===sid && q.chapter===ch) return q.free===true;
+  }
+  return false;
+}
+
+function isUnlocked(sid){
+  if(!CU) return false;
+  var u=CU.unlocked||[];
+  for(var i=0;i<u.length;i++) if(u[i]===sid) return true;
+  return false;
+}
+
+/* ---- views ---- */
+function showV(id){
+  var vs=document.querySelectorAll(".view");
+  for(var i=0;i<vs.length;i++) vs[i].classList.remove("active");
+  gi(id).classList.add("active");
+  window.scrollTo(0,0);
+}
+
+/* ---- auth ---- */
+function doReg(){
+  var n=gi("rn").value.trim();
+  var e=gi("re").value.trim().toLowerCase();
+  var p=gi("rp").value;
+  var err=gi("r-err");
+  err.textContent="";
+  if(!n||!e||!p){err.textContent="Please fill all fields";return;}
+  if(p.length<6){err.textContent="Password must be at least 6 characters";return;}
+  var users=lU();
+  for(var i=0;i<users.length;i++){
+    if(users[i].email===e){err.textContent="Email already registered";return;}
+  }
+  var user={name:n,email:e,pass:p,unlocked:[],pending:[]};
+  users.push(user); sU(users);
+  CU=user; hideM("reg-m"); afterLogin();
+}
+
+function doLogin(){
+  var e=gi("le").value.trim().toLowerCase();
+  var p=gi("lp").value;
+  var err=gi("l-err");
+  err.textContent="";
+  if(e===AE && p===AP){
+    CU={name:"Admin",email:AE,isAdmin:true};
+    hideM("login-m"); updateNav();
+    renderAU(); renderAQ(); showV("v-admin"); return;
+  }
+  var user=gU(e);
+  if(!user||user.pass!==p){err.textContent="Incorrect credentials";return;}
+  CU=user; hideM("login-m"); afterLogin();
+}
+
+function doLogout(){
+  CU=null; updateNav(); renderHS(); showV("v-home");
+}
+
+function afterLogin(){
+  updateNav();
+  gi("dash-w").textContent="Welcome, "+CU.name+"!";
+  renderDS(); showV("v-dash");
+}
+
+/* FIX #1: updateNav - use double-quote strings to avoid conflict with single-quote IDs */
+function updateNav(){
+  var el=gi("nav-r");
+  if(!CU){
+    el.innerHTML="<button class=\"btn bo bsm\" onclick=\"showM('login-m')\">Login</button>"
+               +"<button class=\"btn bp bsm\" onclick=\"showM('reg-m')\">Sign Up</button>";
+  } else if(CU.isAdmin){
+    el.innerHTML="<button class=\"btn bo bsm\" onclick=\"showV('v-admin');renderAU();renderAQ()\">Admin Panel</button>"
+               +"<button class=\"btn bsm\" style=\"background:rgba(232,82,82,0.14);color:var(--danger);border:none\" onclick=\"doLogout()\">Logout</button>";
+  } else {
+    el.innerHTML="<button class=\"btn bo bsm\" onclick=\"showV('v-dash');renderDS()\">My Subjects</button>"
+               +"<button class=\"btn bsm\" style=\"background:rgba(232,82,82,0.14);color:var(--danger);border:none\" onclick=\"doLogout()\">Logout</button>";
+  }
+}
+
+/* ---- subject cards ---- */
+/* FIX #2: mkCard - use double-quote outer strings, escape inner as needed */
+function mkCard(sub,ulk,pnd,home){
+  var isU=false,isP=false;
+  for(var i=0;i<(ulk||[]).length;i++) if(ulk[i]===sub.id) isU=true;
+  for(var i=0;i<(pnd||[]).length;i++) if(pnd[i]===sub.id) isP=true;
+  var chs=getChaps(sub.id);
+  var hasFree=false;
+  for(var i=0;i<chs.length;i++) if(isFree(sub.id,chs[i])){hasFree=true;break;}
+  var tag="";
+  if(isU)      tag='<div class="stag st-open">Unlocked</div>';
+  else if(isP) tag='<div class="stag st-pend">Pending Activation</div>';
+  else if(hasFree) tag='<div class="stag st-free">Ch.1 Free</div>';
+  else         tag='<div class="stag st-lock">Locked</div>';
+  var click="";
+  if(home)     click="onclick=\"showM('reg-m')\"";
+  else if(isU) click="onclick=\"openSub('"+sub.id+"')\"";
+  else if(isP) click="onclick=\"toast('Your request is being reviewed')\"";
+  else         click="onclick=\"openPay('"+sub.id+"')\"";
+  return '<div class="sc" '+click+'>'+tag
+    +'<div class="sc-icon">'+sub.icon+'</div>'
+    +'<div class="sc-name">'+sub.name+'</div>'
+    +'<div class="sc-badges">'
+    +'<span class="bdg bm">Mid Term</span>'
+    +'<span class="bdg bf">Final</span>'
+    +'</div></div>';
+}
+
+function renderHS(){
+  var el=gi("home-sg");
+  var h="";
+  for(var i=0;i<SUBS.length;i++) h+=mkCard(SUBS[i],[],[],true);
+  el.innerHTML=h;
+}
+
+function renderDS(){
+  var el=gi("dash-sg");
+  var h="";
+  for(var i=0;i<SUBS.length;i++) h+=mkCard(SUBS[i],CU.unlocked,CU.pending,false);
+  el.innerHTML=h;
+}
+
+/* ---- payment ---- */
+function openPay(sid){
+  cSub=sid;
+  var sub=null;
+  for(var i=0;i<SUBS.length;i++) if(SUBS[i].id===sid){sub=SUBS[i];break;}
+  gi("pay-sn").textContent=sub.name;
+  showM("pay-m");
+}
+
+function submitPay(){
+  if(!CU||!cSub) return;
+  if(!CU.pending) CU.pending=[];
+  var found=false;
+  for(var i=0;i<CU.pending.length;i++) if(CU.pending[i]===cSub) found=true;
+  if(!found) CU.pending.push(cSub);
+  var users=lU();
+  for(var i=0;i<users.length;i++) if(users[i].email===CU.email){users[i]=CU;break;}
+  sU(users); hideM("pay-m");
+  toast("Request sent! Activation within a few hours.");
+  renderDS();
+}
+
+/* ---- chapters ---- */
+/* FIX #3: openSub - escape quotes in onclick strings properly */
+function openSub(sid){
+  cSub=sid;
+  var sub=null;
+  for(var i=0;i<SUBS.length;i++) if(SUBS[i].id===sid){sub=SUBS[i];break;}
+  gi("chv-t").textContent=sub.name;
+  var chs=getChaps(sid);
+  var ulk=isUnlocked(sid);
+  var h="";
+  for(var i=0;i<chs.length;i++){
+    var ch=chs[i];
+    var free=isFree(sid,ch);
+    var can=ulk||free;
+    var mqs=getChapQs(sid,ch,"mid");
+    var fqs=getChapQs(sid,ch,"final");
+    var ftag=free?' <span style="color:var(--teal);font-size:.7rem;font-weight:600">[FREE]</span>':"";
+    var lk=can?"":"&#128274; ";
+    var chEsc=ch.replace(/'/g,"\\'");
+    var mb="",fb="";
+    if(mqs.length>0){
+      if(can) mb="<button class=\"btn bo bsm\" onclick=\"startQ('"+chEsc+"','mid')\">Mid ("+mqs.length+")</button>";
+      else    mb='<button class="btn bsm" style="background:rgba(255,255,255,0.05);color:var(--gray);border:1px solid rgba(255,255,255,0.1)" onclick="toast(\'Unlock this subject to access all chapters\')">Mid ('+mqs.length+')</button>';
+    }
+    if(fqs.length>0){
+      if(can) fb="<button class=\"btn bp bsm\" onclick=\"startQ('"+chEsc+"','final')\">Final ("+fqs.length+")</button>";
+      else    fb='<button class="btn bsm" style="background:rgba(255,255,255,0.05);color:var(--gray);border:1px solid rgba(255,255,255,0.1)" onclick="toast(\'Unlock this subject to access all chapters\')">Final ('+fqs.length+')</button>';
+    }
+    h+='<div class="citem">'
+      +'<div class="ch-info"><div class="ci-name">'+lk+ch+ftag+'</div>'
+      +'<div class="ci-cnt">Mid: '+mqs.length+' questions | Final: '+fqs.length+' questions</div></div>'
+      +'<div class="ci-acts">'+mb+fb+'</div></div>';
+  }
+  gi("clist").innerHTML=h;
+  showV("v-chaps");
+}
+
+/* ---- quiz ---- */
+function startQ(ch,type){
+  cChap=ch; cType=type; cIdx=0; uAns={}; dAns={};
+  var raw=getChapQs(cSub,ch,type);
+  if(!raw.length){toast("No questions in this section yet");return;}
+  cQs=shuffle(raw.slice());
+  var sub=null;
+  for(var i=0;i<SUBS.length;i++) if(SUBS[i].id===cSub){sub=SUBS[i];break;}
+  gi("qtitle").textContent=sub.name+" - "+ch;
+  gi("qmeta").textContent=(type==="mid"?"Mid Term":"Final")+" | "+cQs.length+" Questions";
+  showV("v-quiz"); renderQ();
+}
+
+function renderQ(){
+  var q=cQs[cIdx];
+  var tot=cQs.length;
+  gi("pfill").style.width=((cIdx+1)/tot*100)+"%";
+  gi("qcnt").textContent=(cIdx+1)+" / "+tot;
+  gi("pbtn").disabled=(cIdx===0);
+  var ans=dAns[q.id];
+  var L=["A","B","C","D"];
+  var oh="";
+  for(var i=0;i<q.opts.length;i++){
+    var cls="oitem";
+    if(ans!==undefined){
+      cls+=" odis";
+      if(i===q.correct) cls+=" ocor";
+      else if(i===ans&&ans!==q.correct) cls+=" owrn";
+    } else {
+      if(uAns[q.id]===i) cls+=" osel";
+    }
+    var cl=(ans===undefined)?"onclick=\"selO("+i+")\"":" ";
+    oh+='<li class="'+cls+'" '+cl+'><div class="olet">'+L[i]+'</div><div>'+q.opts[i]+'</div></li>';
+  }
+  var eh="";
+  if(ans!==undefined&&q.explain) eh='<div class="expl"><strong>Explanation:</strong> '+q.explain+'</div>';
+  var last=(cIdx===tot-1);
+  var nb=gi("nbtn");
+  nb.textContent=last?"Finish":"Next";
+  nb.className="btn "+(last?"bg bsm":"bp bsm");
+  gi("qbox").innerHTML='<div class="qcard"><div class="qnum">Question '+(cIdx+1)+' of '+tot+'</div><div class="qtext">'+q.q+'</div><ul class="olist">'+oh+'</ul>'+eh+'</div>';
+}
+
+function selO(i){
+  var q=cQs[cIdx];
+  if(dAns[q.id]!==undefined) return;
+  uAns[q.id]=i; dAns[q.id]=i; renderQ();
+}
+
+function qnav(d){
+  if(d===1){
+    if(cIdx<cQs.length-1){cIdx++;renderQ();}
+    else showRes();
+  } else {
+    if(cIdx>0){cIdx--;renderQ();}
+  }
+}
+
+function showRes(){
+  var cor=0;
+  for(var i=0;i<cQs.length;i++) if(dAns[cQs[i].id]===cQs[i].correct) cor++;
+  var tot=cQs.length;
+  var pct=Math.round(cor/tot*100);
+  var pass=pct>=60;
+  gi("rpct").textContent=pct+"%";
+  gi("rpct").className="rpct "+(pass?"rpass":"rfail");
+  gi("rlbl").textContent=pass?"Great job! Well done":"Keep reviewing and try again";
+  gi("rcor").textContent=cor;
+  gi("rwrn").textContent=tot-cor;
+  gi("rtot").textContent=tot;
+  showV("v-res");
+}
+
+function retake(){ startQ(cChap,cType); }
+
+function confirmLeave(){
+  var k=Object.keys(dAns);
+  if(k.length>0&&!confirm("Exit quiz? Progress will be lost.")) return;
+  showV("v-chaps");
+}
+
+/* ---- admin ---- */
+function aTab(btn,sec){
+  var tabs=document.querySelectorAll(".atab");
+  var secs=document.querySelectorAll(".asec");
+  for(var i=0;i<tabs.length;i++) tabs[i].classList.remove("act");
+  for(var i=0;i<secs.length;i++) secs[i].classList.remove("act");
+  btn.classList.add("act");
+  gi(sec).classList.add("act");
+  if(sec==="a-qs") renderAQ();
+  if(sec==="a-users") renderAU();
+}
+
+/* FIX #4: renderAU - use double-quote outer strings */
+function renderAU(){
+  var users=lU();
+  var tb=gi("u-tbody");
+  var rows="";
+  for(var i=0;i<users.length;i++){
+    var u=users[i];
+    var any=false;
+    for(var j=0;j<SUBS.length;j++){
+      var s=SUBS[j];
+      var isU=(u.unlocked||[]).indexOf(s.id)!==-1;
+      var isP=(u.pending||[]).indexOf(s.id)!==-1;
+      if(!isU&&!isP) continue;
+      any=true;
+      var st=isU?'<span class="tga">Active</span>':'<span class="tgp">Pending</span>';
+      var ac=(!isU&&isP)?"<button class=\"btn bp bsm\" onclick=\"actU('"+u.email+"','"+s.id+"')\">Activate</button>":"";
+      rows+="<tr><td>"+u.name+"</td><td style=\"font-size:.76rem\">"+u.email+"</td><td>"+s.name+"</td><td>"+st+"</td><td>"+ac+"</td></tr>";
+    }
+    if(!any) rows+="<tr><td>"+u.name+"</td><td style=\"font-size:.76rem\">"+u.email+"</td><td colspan=\"3\" style=\"color:var(--gray)\">No requests yet</td></tr>";
+  }
+  tb.innerHTML=rows||"<tr><td colspan=\"5\" style=\"color:var(--gray);text-align:center\">No students yet</td></tr>";
+}
+
+function actU(email,sid){
+  var users=lU();
+  for(var i=0;i<users.length;i++){
+    if(users[i].email!==email) continue;
+    if(!users[i].unlocked) users[i].unlocked=[];
+    if(users[i].unlocked.indexOf(sid)===-1) users[i].unlocked.push(sid);
+    var np=[];
+    for(var j=0;j<(users[i].pending||[]).length;j++)
+      if(users[i].pending[j]!==sid) np.push(users[i].pending[j]);
+    users[i].pending=np;
+    if(CU&&CU.email===email) CU=users[i];
+    break;
+  }
+  sU(users); renderAU(); toast("User activated successfully");
+}
+
+/* FIX #5: renderAQ - use double-quote outer strings */
+function renderAQ(){
+  var sf=gi("f-sub").value;
+  var tf=gi("f-type").value;
+  var cf=gi("f-ch").value;
+  var chs=[];
+  for(var i=0;i<QUESTIONS.length;i++){
+    var q=QUESTIONS[i];
+    if((!sf||q.subject===sf)&&chs.indexOf(q.chapter)===-1) chs.push(q.chapter);
+  }
+  chs.sort();
+  var fch=gi("f-ch");
+  var prev=cf;
+  var cho="<option value=\"\">All Chapters</option>";
+  for(var i=0;i<chs.length;i++) cho+="<option value=\""+chs[i]+"\""+(chs[i]===prev?" selected":"")+">"+chs[i]+"</option>";
+  fch.innerHTML=cho;
+  var qs=[];
+  for(var i=0;i<QUESTIONS.length;i++){
+    var q=QUESTIONS[i];
+    if((!sf||q.subject===sf)&&(!tf||q.type===tf)&&(!cf||q.chapter===cf)) qs.push(q);
+  }
+  var tb=gi("q-tbody");
+  var rows="";
+  for(var i=0;i<qs.length;i++){
+    var q=qs[i];
+    var sn="";
+    for(var j=0;j<SUBS.length;j++) if(SUBS[j].id===q.subject){sn=SUBS[j].name;break;}
+    var qt=q.q.length>65?q.q.slice(0,65)+"...":q.q;
+    rows+="<tr><td>"+(i+1)+"</td><td style=\"max-width:260px\">"+qt+"</td><td>"+sn+"</td><td style=\"font-size:.74rem\">"+q.chapter+"</td><td><span class=\"bdg "+(q.type==="mid"?"bm":"bf")+"\">"+q.type+"</span></td><td><button class=\"btn bd bsm\" onclick=\"delQ("+q.id+")\">Del</button></td></tr>";
+  }
+  tb.innerHTML=rows||"<tr><td colspan=\"6\" style=\"color:var(--gray);text-align:center\">No questions found</td></tr>";
+}
+
+function delQ(id){
+  if(!confirm("Delete this question?")) return;
+  var nq=[];
+  for(var i=0;i<QUESTIONS.length;i++) if(QUESTIONS[i].id!==id) nq.push(QUESTIONS[i]);
+  QUESTIONS=nq; sQ(); renderAQ(); toast("Deleted");
+}
+
+function addQ(){
+  var sub=gi("aq-sub").value;
+  var ch=gi("aq-ch").value.trim();
+  var type=gi("aq-type").value;
+  var free=gi("aq-free").value==="true";
+  var q=gi("aq-q").value.trim();
+  var opts=[gi("aq-0").value.trim(),gi("aq-1").value.trim(),gi("aq-2").value.trim(),gi("aq-3").value.trim()];
+  var cor=parseInt(gi("aq-cor").value);
+  var ex=gi("aq-ex").value.trim();
+  if(!sub||!ch||!q||!opts[0]||!opts[1]||!opts[2]||!opts[3]){toast("Please fill all required fields");return;}
+  QUESTIONS.push({id:nextId++,subject:sub,chapter:ch,free:free,type:type,q:q,opts:opts,correct:cor,explain:ex});
+  sQ(); toast("Question added successfully"); renderAQ();
+  gi("aq-q").value="";gi("aq-0").value="";gi("aq-1").value="";gi("aq-2").value="";gi("aq-3").value="";gi("aq-ex").value="";
+}
+
+/* ---- modals ---- */
+function showM(id){ gi(id).style.display="flex"; }
+function hideM(id){ gi(id).style.display="none"; }
+function swM(a,b){ hideM(a); showM(b); }
+
+/* ---- utils ---- */
+function shuffle(a){
+  for(var i=a.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var t=a[i];a[i]=a[j];a[j]=t;
+  }
+  return a;
+}
+
+function toast(msg){
+  var el=gi("toast");
+  el.textContent=msg;
+  el.className="show";
+  setTimeout(function(){el.className="";},3000);
+}
+
+/* ---- init ---- */
+lQ();
+renderHS();
+updateNav();
+</script>
+</body>
+</html>
